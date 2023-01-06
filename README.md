@@ -1,1 +1,1 @@
-# Internet-Media-Database
+# Japanese-Animated-Media-Database
