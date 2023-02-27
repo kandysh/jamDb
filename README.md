@@ -6,3 +6,7 @@ Jam Db
 Work in Progress
 
 Template - generated using vite
+
+------------------------
+Password Encryption with BCrypt
+ -BCrypt works random salt, so each call will generate a different result

@@ -2,15 +2,9 @@ package com.jamdb.japi.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-
-import java.util.Objects;
-import java.util.UUID;
 
 @Entity(name = "users")
 @NoArgsConstructor
@@ -19,23 +13,18 @@ import java.util.UUID;
 @Setter
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class User extends BaseEntity{
+public class User extends BaseEntity {
 
-    @Column(name = "first_name")
-    private String firstName;
-    @Column(name="last_name")
-    private String lastName;
-    @NotNull
+    @Column(name = "user_name", nullable = false, unique = true)
+    private String userName;
+
     @Email
-    @Size(max = 255)
-    @Column(unique = true)
+    @Size(max = 128)
+    @Column(nullable = false)
     private String email;
 
-    @PrePersist
-    @PreUpdate
-    private void prepareEmail(){
-        this.email= Objects.isNull(email)?null:email.toLowerCase();
-    }
-
+    @Column(length = 60, nullable = false)
+    private String password;
 
 }
+
