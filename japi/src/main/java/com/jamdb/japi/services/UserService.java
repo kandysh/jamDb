@@ -8,6 +8,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+
 @Service
 @Transactional
 public class UserService implements UserServiceInterface {
@@ -19,9 +21,15 @@ public class UserService implements UserServiceInterface {
         this.passwordEncoder = passwordEncoder;
     }
 
+    private boolean emailExists(String email) {
+        return Objects.nonNull(userRepository.findByEmail(email));
+    }
+
     @Override
     public User registerNewUser(NewUserDto newUserDto) throws UserAuthException {
-
+        if (emailExists(newUserDto.getEmail())) {
+            throw new UserAuthException("user already exists");
+        }
         User user = new User();
         user.setUserName(newUserDto.getUserName());
         user.setEmail(newUserDto.getEmail());

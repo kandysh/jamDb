@@ -12,8 +12,6 @@ public class JapiApplication {
     public static void main(String[] args) {
         SpringApplication.run(JapiApplication.class, args);
     }
-    @Bean
-    public PasswordEncoder encoder(){
-        return new BCryptPasswordEncoder();
-    }
+
+
 }

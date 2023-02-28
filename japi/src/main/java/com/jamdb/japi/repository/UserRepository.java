@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.UUID;
 
 public interface UserRepository extends JpaRepository<User, UUID> {
-    @Query("Select u from User u where email=?1")
-    public boolean emailExists(String email);
+    @Query(value = "Select u from users u where u.email=?1")
+    public User findByEmail(String email);
+
 }
