@@ -9,4 +9,6 @@ Template - generated using vite
 
 ------------------------
 Password Encryption with BCrypt
- -BCrypt works random salt, so each call will generate a different result
+ -BCrypt works random salt, so each call will generate a different result.
+
+For testing we are using main database as in memory databases don't provide the full test
