@@ -12,7 +12,6 @@ import java.util.Collection;
 import java.util.Collections;
 
 @Entity(name = "users")
-@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

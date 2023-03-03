@@ -1,6 +1,6 @@
 package com.jamdb.japi;
 
-import com.jamdb.japi.controllers.UserController;
+import com.jamdb.japi.controllers.AuthController;
 import com.jamdb.japi.dto.NewUserDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class UserSmokeTest {
 
     @Autowired
-    private UserController userController;
+    private AuthController userController;
 
     @Test
     public void newUserRegistration() throws Exception {

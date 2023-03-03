@@ -9,6 +9,4 @@ public class JapiApplication {
     public static void main(String[] args) {
         SpringApplication.run(JapiApplication.class, args);
     }
-
-
 }
