@@ -1,12 +1,12 @@
 package com.jamdb.japi.controllers;
 
-import com.jamdb.japi.dto.ApiResponse;
 import com.jamdb.japi.dto.NewUserDto;
 import com.jamdb.japi.exceptions.UserAuthException;
 import com.jamdb.japi.services.UserServiceInterface;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @CrossOrigin
@@ -20,6 +20,7 @@ public class UserController {
 
     @PostMapping("/create")
     public ResponseEntity<?> newUserRegistration(@RequestBody @Valid NewUserDto userDto) throws UserAuthException {
-        return ResponseEntity.ok(new ApiResponse(userService.registerNewUser(userDto).toString()));
+        return ResponseEntity.ok(userService.registerNewUser(userDto));
+
     }
 }
