@@ -5,9 +5,6 @@ server:
 spring:
   main:
     web-application-type: servlet
-  security:
-    jwt:
-      secret:462D4A614E645267556B58703273357638792F413F4428472B4B625065536856
 
   datasource:
     #aws rds jamdb
@@ -18,7 +15,7 @@ spring:
     password: "notanotheranilist"
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true

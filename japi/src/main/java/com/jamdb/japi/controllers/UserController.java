@@ -1,8 +1,6 @@
 package com.jamdb.japi.controllers;
 
 import com.jamdb.japi.dto.ApiResponse;
-import com.jamdb.japi.dto.UserResponse;
-import com.jamdb.japi.entities.User;
 import com.jamdb.japi.exceptions.UserAuthException;
 import com.jamdb.japi.services.UserService;
 import lombok.AllArgsConstructor;
@@ -23,7 +21,7 @@ public class UserController {
     public ResponseEntity<?> getUser(@PathVariable String username) {
         try {
             return ResponseEntity.ok(userService.getUser(username));
-        } catch (UserAuthException e) {
+        } catch (UserAuthException | RuntimeException e) {
             return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("user not found " + username));
         }
     }
