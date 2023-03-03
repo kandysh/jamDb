@@ -25,6 +25,7 @@ function ShowAndHidePassword(props) {
         } else {
             setErrorMessage("");
         }
+        props.onChange(passwordInput, isValid);
     }
     const togglePassword = () => {
         if (showPassword === false) {

@@ -47,7 +47,14 @@ input:focus {
     justify-content: center;
     align-items: center;
 }
-
+.name_field{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    fieldset{
+        width: 48%;
+    }
+}
 .form-submit {
     position: relative;
     box-sizing: border-box;
@@ -68,4 +75,8 @@ input:focus {
 .form-submit:hover {
     background-color: #e24c89;
     color: #fff;
+}
+
+.fieldset{
+    justify-content: flex-start;
 }

@@ -13,11 +13,11 @@ function App() {
 
       <div className="App">
         <header className="App-header">
-          <h2>Shivam Sakore</h2>
+          <h2>JamDB</h2>
         </header>
-        <MediaCarousel/>
+        {/* <MediaCarousel/>
         <MediaCard/>
-        <Grid />
+        <Grid /> */}
         <div className="main-container">
           <div className="left">
             <Login />
