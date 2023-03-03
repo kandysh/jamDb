@@ -1,5 +1,6 @@
 import React from 'react'
-import '../css/form.css'
+import ShowAndHidePassword from './form/ShowAndHidePassword';
+import '../scss/form.scss'
 
 function Login() {
     return (
@@ -12,10 +13,11 @@ function Login() {
                             <label htmlFor="username" className="username">Username</label>
                             <input type="text" className="text-input" name="username" id="username" placeholder="Username" tabindex="1"/>
                         </fieldset>
-                        <fieldset>
+                        {/* <fieldset>
                             <label htmlFor="password" className="password">Password</label>
                             <input type="password" className="text-input"  name="password" id="password" placeholder="Password" tabindex="2" />
-                        </fieldset>
+                        </fieldset> */}
+                        <ShowAndHidePassword index="2"/>
                     </div>
                             <input type="submit" className="button form-submit" tabindex="3" />
                 </form>

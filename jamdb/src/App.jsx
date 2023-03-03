@@ -1,10 +1,11 @@
-import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import Grid from './components/Grid';
 import Home from './components/Home';
+import MediaCard from './components/MediaCard';
+import MediaCarousel from './components/MediaCarousel.jsx';
 
 function App() {
   return (
@@ -14,6 +15,8 @@ function App() {
         <header className="App-header">
           <h2>Shivam Sakore</h2>
         </header>
+        <MediaCarousel/>
+        <MediaCard/>
         <Grid />
         <div className="main-container">
           <div className="left">
