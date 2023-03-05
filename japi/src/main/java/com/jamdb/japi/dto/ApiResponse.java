@@ -1,14 +1,14 @@
 package com.jamdb.japi.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
+@EqualsAndHashCode
 public class ApiResponse {
     private LocalDate localDate;
     private String message;

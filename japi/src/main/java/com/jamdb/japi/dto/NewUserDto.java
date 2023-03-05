@@ -1,13 +1,14 @@
 package com.jamdb.japi.dto;
 
 import jakarta.validation.constraints.Email;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
+@ToString
+@EqualsAndHashCode
 public class NewUserDto {
     @Email
     private String email;
