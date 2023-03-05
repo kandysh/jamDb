@@ -15,9 +15,9 @@ function App() {
         <header className="App-header">
           <h2>JamDB</h2>
         </header>
-        {/* <MediaCarousel/>
-        <MediaCard/>
-        <Grid /> */}
+        <MediaCarousel/>
+        {/* <MediaCard/> */}
+        {/* <Grid /> */}
         <div className="main-container">
           <div className="left">
             <Login />
