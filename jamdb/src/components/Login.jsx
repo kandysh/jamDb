@@ -1,23 +1,71 @@
-import React from 'react'
-import '../css/form.css'
+import React, { useState } from 'react'
+import '../scss/form.scss'
+import Username from './form/Username';
+import ShowAndHidePassword from './form/ShowAndHidePassword';
 
 function Login() {
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+
+    const [loginError, setLoginError] = useState(null);
+    const [isFormValid, setIsFormValid] = useState(false);
+
+    const handleUsernameChange = (value, isValid) => {
+        setUsername(value);
+        if (!isValid) {
+            setIsFormValid(false);
+        }
+    };
+
+    const handlePasswordChange = (value, isValid) => {
+        setPassword(value);
+        if (!isValid) {
+            setIsFormValid(false);
+        }
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (username && password) {
+            fetch("/api/login", {
+                method: "POST",
+                body: JSON.stringify({ username, password }),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error("Invalid username or password");
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    // do something with the login response
+                })
+                .catch((error) => {
+                    setLoginError(error.message);
+                });
+        } else {
+            setIsFormValid(false);
+            setLoginError("Please enter a valid username and password");
+        }
+    };
+    
+
     return (
         <section className="login">
             <h2>Sign in to Anime-List</h2>
             <div className="sign-in">
-                <form action="sign-in-form" acceptCharset='UTF-8' method='post'>
+                <form action="sign-in-form" onSubmit={handleSubmit} acceptCharset='UTF-8' method='post'>
+                    {loginError && <div>{loginError}</div>}
+
                     <div className="form-fields">
-                        <fieldset>
-                            <label htmlFor="username" className="username">Username</label>
-                            <input type="text" className="text-input" name="username" id="username" placeholder="Username" tabindex="1"/>
-                        </fieldset>
-                        <fieldset>
-                            <label htmlFor="password" className="password">Password</label>
-                            <input type="password" className="text-input"  name="password" id="password" placeholder="Password" tabindex="2" />
-                        </fieldset>
+                        <Username index="1" onChange={handleUsernameChange} />
+                        <ShowAndHidePassword index="2" onChange={handlePasswordChange} />
                     </div>
-                            <input type="submit" className="button form-submit" tabindex="3" />
+
+                    <input type="submit" disabled={!isFormValid} className="button form-submit" tabindex="3" />
                 </form>
             </div>
         </section>

@@ -41,8 +41,21 @@ input:focus {
     background-color: #fff;
     box-shadow: 0 0 0 4px rgba(234, 76, 137, 0.1);
 }
+.password_div {
+    display: flex;
 
-.form-submit{
+    justify-content: center;
+    align-items: center;
+}
+.name_field{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    fieldset{
+        width: 48%;
+    }
+}
+.form-submit {
     position: relative;
     box-sizing: border-box;
     height: 40x;
@@ -59,7 +72,11 @@ input:focus {
     font-weight: 600;
     line-height: 20px;
 }
-.form-submit:hover{
+.form-submit:hover {
     background-color: #e24c89;
     color: #fff;
+}
+
+.fieldset{
+    justify-content: flex-start;
 }
