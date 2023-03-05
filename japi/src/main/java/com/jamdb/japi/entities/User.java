@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Entity(name = "users")
 @Builder
@@ -34,6 +35,9 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "user_role")
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
+
+    @OneToMany(mappedBy = "user")
+    private List<Token> tokens;
 
     public void setUserRole(String userRole){
         this.userRole = UserRole.valueOf(userRole.toUpperCase());

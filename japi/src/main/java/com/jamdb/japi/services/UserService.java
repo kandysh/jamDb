@@ -23,7 +23,7 @@ public class UserService implements UserServiceInterface {
     private final PasswordEncoder encoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-
+    private final TokenService tokenService;
     public boolean userExists(String userName) {
         return userRepository.findByUserName(userName).isPresent();
     }
@@ -36,8 +36,9 @@ public class UserService implements UserServiceInterface {
                 .password(encoder.encode(newUserDto.getPassword()))
                 .userRole(UserRole.USER)
                 .build();
-        userRepository.save(user);
+        var savedUser =  userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);
+        tokenService.saveUserToken(savedUser,jwtToken);
         return UserResponse.builder().userName(user.getUsername()).email(user.getEmail()).token(jwtToken).build();
     }
 
@@ -56,6 +57,8 @@ public class UserService implements UserServiceInterface {
         }
         var user = userRepository.findByUserName(userAuthDto.getUserName()).orElseThrow();
         var jwtToken = jwtService.generateToken(user);
+        tokenService.revokeAllUserTokens(user);
+        tokenService.saveUserToken(user, jwtToken);
         return UserResponse.builder().userName(user.getUsername()).email(user.getEmail()).token(jwtToken).build();
     }
 
