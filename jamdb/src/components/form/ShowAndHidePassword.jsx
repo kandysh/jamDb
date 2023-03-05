@@ -64,7 +64,7 @@ function ShowAndHidePassword(props) {
                     placeholder="Password"
                     tabIndex={props.index} />
 
-                <div className="text-input" onClick={togglePassword}>
+                <div className="text-input" onClick={togglePassword} onBlur={handlePasswordBlur}>
                     {showPassword ? <VisibilityOff /> : <Visibility />}
                 </div>
 

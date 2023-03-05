@@ -20,7 +20,7 @@ function App() {
         <Grid /> */}
         <div className="main-container">
           <div className="left">
-            <Login />
+            {/* <Login /> */}
           </div>
           <div className="right">
             <Signup />
