@@ -1,21 +1,26 @@
-import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+import './App.css';
+import './scss/Root.scss';
+
 import Login from './components/Login';
 import Signup from './components/Signup';
 import Grid from './components/Grid';
 import Home from './components/Home';
 import MediaCard from './components/MediaCard';
 import MediaCarousel from './components/MediaCarousel.jsx';
+import MediaPage from './pages/MediaPage';
 
 function App() {
   return (
     <BrowserRouter>
 
       <div className="App">
-        <header className="App-header">
+        {/* <header className="App-header">
           <h2>JamDB</h2>
-        </header>
-        <MediaCarousel/>
+        </header> */}
+        <MediaPage/>
+        {/* <MediaCarousel/> */}
         {/* <MediaCard/> */}
         {/* <Grid /> */}
         <div className="main-container">
@@ -23,7 +28,7 @@ function App() {
             {/* <Login /> */}
           </div>
           <div className="right">
-            <Signup />
+            {/* <Signup /> */}
           </div>
         </div>
       </div>
