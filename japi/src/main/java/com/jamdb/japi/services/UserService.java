@@ -62,4 +62,6 @@ public class UserService implements UserServiceInterface {
         return UserResponse.builder().userName(user.getUsername()).email(user.getEmail()).token(jwtToken).build();
     }
 
+
+
 }

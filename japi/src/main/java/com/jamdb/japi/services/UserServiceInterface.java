@@ -14,4 +14,5 @@ public interface UserServiceInterface {
     public UserResponse getUser(String userName) throws UserAuthException;
 
     public UserResponse authenticateUser(UserAuthDto userAuthDto) throws UserAuthException;
+
 }
