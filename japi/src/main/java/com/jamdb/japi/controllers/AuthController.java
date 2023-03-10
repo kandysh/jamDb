@@ -4,7 +4,7 @@ import com.jamdb.japi.dto.ApiResponse;
 import com.jamdb.japi.dto.NewUserDto;
 import com.jamdb.japi.dto.UserAuthDto;
 import com.jamdb.japi.exceptions.UserAuthException;
-import com.jamdb.japi.services.UserServiceInterface;
+import com.jamdb.japi.services.UserService.UserServiceInterface;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

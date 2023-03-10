@@ -2,7 +2,7 @@ package com.jamdb.japi.controllers;
 
 import com.jamdb.japi.dto.ApiResponse;
 import com.jamdb.japi.exceptions.UserAuthException;
-import com.jamdb.japi.services.UserService;
+import com.jamdb.japi.services.UserService.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

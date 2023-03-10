@@ -1,6 +1,6 @@
 package com.jamdb.japi.repository;
 
-import com.jamdb.japi.entities.Token;
+import com.jamdb.japi.entities.token.Token;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
