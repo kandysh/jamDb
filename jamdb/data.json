@@ -1,0 +1,134 @@
+{
+    "title": "The Great Gatsby",
+    "imagePath": "https://irs.www.warnerbros.com/keyart-jpeg/movies/media/browser/the_great_gatsby_key_art.jpg",
+    "description": "The Great Gatsby is a novel written by American author F. Scott Fitzgerald that follows a cast of characters living in the fictional towns of West Egg and East Egg on prosperous Long Island in the summer of 1922.",
+    "backgroundImagePath": "https://chimesnewspaper.com/wp-content/uploads/2013/05/The-Great-Gatsby3-900x414.jpg",
+    "videoPath": "https://www.youtube.com/watch?v=rARN6agiW7o",
+    "videoTitle": "The Great Gatsby Trailer",
+    "videoDescription": "The Great Gatsby is a 2013 American romantic drama film based on F. Scott Fitzgerald's 1925 novel of the same name. The film was co-written and directed by Baz Luhrmann, produced by Luhrmann and Catherine Martin, and stars Leonardo DiCaprio as the eponymous Jay Gatsby, with Tobey Maguire, Carey Mulligan, Joel Edgerton, Isla Fisher, and Elizabeth Debicki in supporting roles.",
+    "videoThumbnail": "https://i.ytimg.com/vi/rARN6agiW7o/maxresdefault.jpg",
+    "cast": [
+        {
+            "name": "Leonardo DiCaprio",
+            "role": "Jay Gatsby",
+            "imagePath": "http://t0.gstatic.com/licensed-image?q=tbn:ANd9GcSdY1NpZdeMQrf8NiPwHDhMayah5RmDn_CJaQaF2MzEeFEAftcmNpeuIOsbu0muKrC7dJ5CK9p1KMwqBV4"
+        },
+        {
+            "name": "Tobey Maguire",
+            "role": "Nick Carraway",
+            "imagePath": "http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcTWw-2Xj9j3F_o1aQ-dQVdKB3fIJLVau15kzgNJ736mA2W7AAUI3gT95HWhUrAeKvvb3PS3eZsTsARrv4w"
+        },
+        {
+            "name": "Carey Mulligan",
+            "role": "Daisy Buchanan",
+            "imagePath": "http://t0.gstatic.com/licensed-image?q=tbn:ANd9GcTbaM6hzT-AA1XxbwfZ41NWjCLGyDC3VAeP1RQjY7om7dchEXItvT86oxworzVxt639lXUmA6Q_9GoqXDg"
+        },
+        {
+            "name": "Joel Edgerton",
+            "role": "Tom Buchanan",
+            "imagePath": "http://t3.gstatic.com/licensed-image?q=tbn:ANd9GcQEu-nhT0ucR81FJJ9cGDaKqHvAnDhEJtWDUAa66y1z28PcOdLiW9Pw_SBbagzNaf08wAzkNb8Bc8yVuF0"
+        },
+        {
+            "name": "Isla Fisher",
+            "role": "Myrtle Wilson",
+            "imagePath": "http://t3.gstatic.com/licensed-image?q=tbn:ANd9GcRn2lXkNr2AbUife3AShSU2UaZvWudMHQqeVTZ1A9_vl3cEkv2DXWBkSgoLiqca-acdbB-RP9x-D4_ZARs"
+        },
+        {
+            "name": "Jason Clarke",
+            "role": "George Wilson",
+            "imagePath": "http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcTtQ-SM8fXgY0ayhxev2JPfmL97YQJyrspAdxyTZEnFVln5RxUlLRFCNVInCAxy6ZGGIy_KTElOVh5NRDo"
+        }
+    ],
+    "comments": [
+        {
+            "userid": "U001",
+            "name": "Narendra Modi",
+            "comment": "This movie was great!"
+        },
+        {
+            "userid": "U096",
+            "name": "Elvis Presley",
+            "comment": "I loved this movie!"
+        },
+        {
+            "userid": "U238",
+            "name": "John Doe",
+            "comment": "I thought this movie was just okay."
+        },
+        {
+            "userid": "U523",
+            "name": "Jane Smith",
+            "comment": "I found this movie to be very emotional and powerful."
+        },
+        {
+            "userid": "U777",
+            "name": "Donald Trump",
+            "comment": "This movie was tremendous. The best movie ever made."
+        },
+        {
+            "userid": "U654",
+            "name": "Barack Obama",
+            "comment": "I really enjoyed this movie. Great performances all around."
+        },
+        {
+            "userid": "U999",
+            "name": "Taylor Swift",
+            "comment": "This movie was so romantic and touching. I loved it."
+        },
+        {
+            "userid": "U234",
+            "name": "Kanye West",
+            "comment": "I thought this movie was overrated. Not my cup of tea."
+        },
+        {
+            "userid": "U111",
+            "name": "Ellen DeGeneres",
+            "comment": "This movie was hilarious. I laughed from start to finish."
+        },
+        {
+            "userid": "U888",
+            "name": "Oprah Winfrey",
+            "comment": "I found this movie to be thought-provoking and insightful."
+        },
+        {
+            "userid": "U345",
+            "name": "Stephen Hawking",
+            "comment": "This movie was a fascinating look into the human mind."
+        },
+        {
+            "userid": "U123",
+            "name": "Neil Armstrong",
+            "comment": "As an astronaut, I appreciated the attention to detail in this movie."
+        },
+        {
+            "userid": "U456",
+            "name": "Mark Zuckerberg",
+            "comment": "This movie was a great example of how technology can change the world."
+        },
+        {
+            "userid": "U567",
+            "name": "Bill Gates",
+            "comment": "I found this movie to be inspiring and uplifting. A must-see."
+        },
+        {
+            "userid": "U789",
+            "name": "Lady Gaga",
+            "comment": "The music in this movie was phenomenal. I was blown away."
+        },
+        {
+            "userid": "U345",
+            "name": "Adele",
+            "comment": "I thought this movie was a little too melodramatic for my taste."
+        },
+        {
+            "userid": "U234",
+            "name": "Tiger Woods",
+            "comment": "This movie was a great example of perseverance and determination."
+        },
+        {
+            "userid": "U345",
+            "name": "Serena Williams",
+            "comment": "I found this movie to be inspiring and empowering."
+        }
+    ]
+}

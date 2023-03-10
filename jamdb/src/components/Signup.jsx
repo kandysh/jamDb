@@ -6,8 +6,10 @@ import ShowAndHidePassword from "./form/ShowAndHidePassword.jsx";
 import Username from './form/Username';
 
 function Signup() {
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
+    const [name, setName] = useState({
+        firstname: "",
+        lastname: ""
+    });
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -21,9 +23,12 @@ function Signup() {
     const [isFormValid, setIsFormValid] = useState(false);
 
     const handleNameChange = (evnt) => {
-        setFirstName(evnt.target.firstname);
-        setLastName(evnt.target.lastname);
-        setNameValid(isValid);
+        const value = evnt.target.value;
+        setName({
+            ...name,
+            [evnt.target.name]: value
+        });
+        // setNameValid(isValid);
         console.log("name change" + firstName);
         console.log("name change" + lastName);
     };
@@ -95,10 +100,11 @@ function Signup() {
                                 <label htmlFor="firstname" className="firstname">Firstname</label>
                                 <input
                                     type="text"
-                                    onSubmit={handleNameChange}
+                                    onChange={handleNameChange}
                                     className="text-input"
-                                    name="firstname" 
+                                    name="firstname"
                                     id="firstname"
+                                    value={name.firstName}
                                     placeholder="First Name"
                                     tabIndex="1"
                                 />
@@ -107,10 +113,11 @@ function Signup() {
                                 <label htmlFor="lastname" className="lastname">Lastname</label>
                                 <input
                                     type="text"
-                                    onSubmit={handleNameChange}
+                                    onChange={handleNameChange}
                                     className="text-input"
                                     name="lastname"
                                     id="lastname"
+                                    value={name.lastName}
                                     placeholder="Last Name"
                                     tabIndex="2"
                                 />
