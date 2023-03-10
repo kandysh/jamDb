@@ -12,9 +12,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-@Configuration
+//@Configuration
 public class JsonSeeder {
-    @Bean
+//    @Bean
     CommandLineRunner runner(ContentService contentService){
         return args -> {
             ObjectMapper mapper = new ObjectMapper();
