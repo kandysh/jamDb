@@ -1,0 +1,20 @@
+$accent-color-light: #FFA500;
+$accent-color-dark: #FF6347;
+
+$background-color-light: #FFFFFF;
+$background-color-dark: #37306B;
+
+$text-color-light: #000000;
+$text-color-dark: #FFFFFF;
+
+$mode: dark; // or dark, depending on your preference
+
+body {
+  background-color: if($mode == light, $background-color-light, $background-color-dark);
+  color: if($mode == light, $text-color-light, $text-color-dark);
+}
+
+.accent {
+  background-color: if($mode == light, $accent-color-light, $accent-color-dark);
+  color: if($mode == light, $text-color-light, $text-color-dark);
+}

@@ -7,26 +7,29 @@ function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
+    const [usernameValid, setUsernameValid] = useState(false);
+    const [passwordValid, setPasswordValid] = useState(false);
+
     const [loginError, setLoginError] = useState(null);
     const [isFormValid, setIsFormValid] = useState(false);
 
     const handleUsernameChange = (value, isValid) => {
         setUsername(value);
-        if (!isValid) {
-            setIsFormValid(false);
-        }
+        setUsernameValid(isValid);
+
     };
 
     const handlePasswordChange = (value, isValid) => {
         setPassword(value);
-        if (!isValid) {
-            setIsFormValid(false);
-        }
+        setPasswordValid(isValid);
     };
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (username && password) {
+        setIsFormValid(usernameValid && passwordValid);
+
+        if (isFormValid) {
             fetch("/api/login", {
                 method: "POST",
                 body: JSON.stringify({ username, password }),
@@ -41,6 +44,7 @@ function Login() {
                     return response.json();
                 })
                 .then((data) => {
+                    alert("You have successfully logged in");
                     // do something with the login response
                 })
                 .catch((error) => {
@@ -48,10 +52,10 @@ function Login() {
                 });
         } else {
             setIsFormValid(false);
-            setLoginError("Please enter a valid username and password");
+            setLoginError("Please enter a valid username and password. / loginError");
         }
     };
-    
+
 
     return (
         <section className="login">
@@ -65,7 +69,13 @@ function Login() {
                         <ShowAndHidePassword index="2" onChange={handlePasswordChange} />
                     </div>
 
-                    <input type="submit" disabled={!isFormValid} className="button form-submit" tabindex="3" />
+                    <input
+                        type="submit"
+                        disabled={isFormValid}
+                        className="button form-submit"
+                        tabIndex="3"
+                        value="Login"
+                    />
                 </form>
             </div>
         </section>

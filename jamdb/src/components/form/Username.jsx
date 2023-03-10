@@ -14,30 +14,30 @@ function Username(props) {
         // Validate username on every change
         const regex = /^[a-zA-Z][a-zA-Z0-9_]{3,}$/;
         setIsUsernameValid(regex.test(value));
-        setUsernameError(isUsernameValid ? "" : "Username must start wi th an alphabet and contain only alphabets, underscores, and numbers");
+        setUsernameError(isUsernameValid ? "" : "Username must start with an alphabet and contain only alphabets, underscores, and numbers");
         props.onChange(username, isUsernameValid);
     };
 
-    useEffect(() => {
-        if (username) {
-            // Check if username exists on API
-            setIsCheckingUsername(true);
-            fetch(`https://example.com/api/check-username/${username}`)
-                .then(response => response.json())
-                .then(data => {
-                    setIsCheckingUsername(false);
-                    if (data.exists) {
-                        setUsernameExistsError("Username already exists. Please choose a different one.");
-                    } else {
-                        setUsernameExistsError("");
-                    }
-                })
-                .catch(error => {
-                    setIsCheckingUsername(false);
-                    console.error(error);
-                });
-        }
-    }, [username]);
+    // useEffect(() => {
+    //     if (username) {
+    //         // Check if username exists on API
+    //         setIsCheckingUsername(true);
+    //         fetch(`https://example.com/api/check-username/${username}`)
+    //             .then(response => response.json())
+    //             .then(data => {
+    //                 setIsCheckingUsername(false);
+    //                 if (data.exists) {
+    //                     setUsernameExistsError("Username already exists. Please choose a different one.");
+    //                 } else {
+    //                     setUsernameExistsError("");
+    //                 }
+    //             })
+    //             .catch(error => {
+    //                 setIsCheckingUsername(false);
+    //                 console.error(error);
+    //             });
+    //     }
+    // }, [username]);
 
     return (
         <div>
@@ -55,7 +55,7 @@ function Username(props) {
                 placeholder="Username"
                 value={username}
                 onChange={handleUsernameChange}
-                tabindex={props.index}
+                tabIndex={props.index}
             />
             {usernameError && <div>{usernameError}</div>}
             {usernameExistsError && <div>{usernameExistsError}</div>}

@@ -9,16 +9,16 @@ function ShowAndHidePassword(props) {
     const [errorMessage, setErrorMessage] = useState("");
     const [isValid, setIsValid] = useState(false);
 
-    const passwordRegex = /^[a-zA-Z0-9_]{8,20}$/;
+    const passwordRegex = /^[a-zA-Z0-9_#$]{8,20}$/;
 
 
 
     const handlePasswordChange = (evnt) => {
         setPasswordInput(evnt.target.value);
-        const isValid = passwordRegex.test(passwordInput);
-        setIsValid(isValid);
+        const isValid1 = passwordRegex.test(passwordInput);
+        setIsValid(isValid1);
 
-        if (passwordRegex.test(e.target.value)) {
+        if (!passwordRegex.test(evnt.target.value)) {
             setErrorMessage(
                 "Password must be between 8 and 20 characters and only contain alphanumeric characters and underscore"
             );
@@ -42,17 +42,10 @@ function ShowAndHidePassword(props) {
 
     };
 
-
-
-
-
-
-
-
     return (
         <fieldset password>
             <label htmlFor="password" className="password">Password</label>
-            <div className="password_div">
+            <div className="password_div"  >
                 <input
                     type={showPassword ? "text" : "password"}
                     onChange={handlePasswordChange}
@@ -69,7 +62,7 @@ function ShowAndHidePassword(props) {
                 </div>
 
                 {isValid ?
-                    <div>dfdavadvda </div>
+                    <></>
                     :
                     <div> {errorMessage} </div>
                 }

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
+import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 import '../scss/MediaCarousel.scss';
 
 function MediaCarousel() {
@@ -44,22 +46,22 @@ function MediaCarousel() {
     };
 
 
-    return (    
+    return (
         <div className="media-carousel " >
             <div className="blur-box">
-            <div className="carousel-content">
-                <img src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx143338-zhyDVYgEzsm5.png" alt="test" />
-                {/* <img src={currentItem.imageUrl} alt={currentItem.title} /> */}
-                {/* <h2>{currentItem.title}</h2>
-                <p>{currentItem.description}</p> */}
-                <h2>One Piece</h2>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                <button className="prev-button" onClick={handlePrevClick}>Prev</button>
-                <button className="next-button" onClick={handleNextClick}>Next</button>
-            </div>
-            <div className="media-list">
-                {mediaItems.map(renderMediaItem)}
-            </div>
+                <div className="carousel-content">
+                    <button className="prev-button" onClick={handlePrevClick}><ArrowBackIosRoundedIcon sx={{ fontSize: 40 }}/></button>
+                    <img src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx143338-zhyDVYgEzsm5.png" alt="test" />
+                    {/* <img src={currentItem.imageUrl} alt={currentItem.title} /> */}
+                    {/* <h2>{currentItem.title}</h2>
+                    <p>{currentItem.description}</p> */}
+                    <h2>One Piece</h2>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                    <button className="next-button" onClick={handleNextClick}><ArrowForwardIosRoundedIcon sx={{ fontSize: 40 }} /></button>
+                </div>
+                <div className="media-list">
+                    {mediaItems.map(renderMediaItem)}
+                </div>
             </div>
         </div>
     );
