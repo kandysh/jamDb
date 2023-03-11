@@ -1,6 +1,5 @@
 package com.jamdb.japi.controllers;
 
-import com.jamdb.japi.entities.content.Content;
 import com.jamdb.japi.services.ContentService.ContentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class ContentController {
     private final ContentService contentService;
     @GetMapping("/list")
-    public Iterable<?> list() {
-        return contentService.listAllContent();
+    public ResponseEntity<?> list() {
+        return ResponseEntity.ok(contentService.listAllContent());
     }
 
 }

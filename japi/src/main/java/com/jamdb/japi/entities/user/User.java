@@ -38,7 +38,7 @@ public class User extends BaseEntity implements UserDetails {
 
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany
     @JoinTable(name="user_anime",joinColumns = @JoinColumn(name = "user_id"),inverseJoinColumns = @JoinColumn(name = "anime_id"))
     private Set<Content> anime = new HashSet<>();
 

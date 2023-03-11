@@ -7,6 +7,7 @@ import com.jamdb.japi.entities.content.Content;
 import com.jamdb.japi.entities.user.User;
 import com.jamdb.japi.exceptions.UserAuthException;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -17,6 +18,7 @@ public interface UserServiceInterface {
 
     public UserResponse authenticateUser(UserAuthDto userAuthDto) throws UserAuthException;
     public void addContent(String username, UUID content_id);
-    public Set<Content> showContent(String username) throws UserAuthException;
+    public List<Content> showContent(String username) throws UserAuthException;
 
+    void deleteContent(String username, UUID fromString);
 }

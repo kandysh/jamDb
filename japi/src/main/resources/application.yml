@@ -7,9 +7,6 @@ spring:
     web-application-type: servlet
 
   datasource:
-    #aws rds jamdb
-#    url: "jdbc:postgresql://jamdb.c4bltlfycvom.ap-south-1.rds.amazonaws.com:5432/jamdb"
-    #supabase jamdb
     url : "jdbc:postgresql://db.helydawygyybigzrcmte.supabase.co:5432/postgres"
     username: "postgres"
     password: "notanotheranilist"

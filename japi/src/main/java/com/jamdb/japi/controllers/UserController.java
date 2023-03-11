@@ -27,7 +27,12 @@ public class UserController {
     }
     @GetMapping("view/{username}")
     public ResponseEntity<?> showContent(@PathVariable String username) throws UserAuthException {
-        return ResponseEntity.ok(userService.showContent(username).stream().toList());
+        return ResponseEntity.ok(userService.showContent(username).stream());
+    }
+    @DeleteMapping("/update/{username}")
+    public ResponseEntity<?> updateContent(@PathVariable String username,@RequestBody AddContentDto addContentDto){
+        userService.deleteContent(username, UUID.fromString(addContentDto.getContentId()));
+        return ResponseEntity.ok(new ApiResponse("deleted successfully"));
     }
 
 }

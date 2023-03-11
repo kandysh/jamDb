@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -74,9 +75,15 @@ public class UserService implements UserServiceInterface {
     }
 
     @Override
-    public Set<Content> showContent(String username) throws UserAuthException {
+    public List<Content> showContent(String username) throws UserAuthException {
         var currentUser = userRepository.findByUserName(username).orElseThrow();
-        return currentUser.getAnime();
+        var contents = currentUser.getAnime();
+        return contents.stream().toList();
+    }
+
+    @Override
+    public void deleteContent(String username, UUID fromString) {
+
     }
 
 
