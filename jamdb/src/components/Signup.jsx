@@ -6,15 +6,12 @@ import ShowAndHidePassword from "./form/ShowAndHidePassword.jsx";
 import Username from './form/Username';
 
 function Signup() {
-    const [name, setName] = useState({
-        firstname: "",
-        lastname: ""
-    });
+
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const [NameValid, setNameValid] = useState(false);
+
     const [emailValid, setEmailValid] = useState(false);
     const [usernameValid, setUsernameValid] = useState(false);
     const [passwordValid, setPasswordValid] = useState(false);
@@ -22,16 +19,7 @@ function Signup() {
     const [FormError, setFormError] = useState(null);
     const [isFormValid, setIsFormValid] = useState(false);
 
-    const handleNameChange = (evnt) => {
-        const value = evnt.target.value;
-        setName({
-            ...name,
-            [evnt.target.name]: value
-        });
-        // setNameValid(isValid);
-        console.log("name change" + firstName);
-        console.log("name change" + lastName);
-    };
+
 
     const handleEmailChange = (value, isValid) => {
         setEmail(value);
@@ -52,10 +40,8 @@ function Signup() {
     };
 
     const handleFormValidation = () => {
-        setIsFormValid(NameValid && emailValid && usernameValid && passwordValid);
+        setIsFormValid(emailValid && usernameValid && passwordValid);
 
-        console.log("fistname" + firstName);
-        console.log("lastname" + lastName);
         console.log("email" + email);
         console.log("username" + username);
         console.log("password" + password);
@@ -68,8 +54,6 @@ function Signup() {
         if (NameValid && emailValid && usernameValid && passwordValid) {
             axios
                 .post("/api/signup", {
-                    firstName,
-                    lastName,
                     email,
                     username,
                     password,
@@ -89,49 +73,21 @@ function Signup() {
 
     return (
         <section className="signup">
-            <h2>Sign Up to Anime-List</h2>
+            <h2>Sign Up</h2>
             <div className="sign-in">
                 <form action="sign-up-form" onSubmit={handleSubmit} acceptCharset='UTF-8' method='post'>
                     {FormError && <div>{FormError}</div>}
 
                     <div className="form-fields">
-                        <div className="name_field">
-                            <fieldset>
-                                <label htmlFor="firstname" className="firstname">Firstname</label>
-                                <input
-                                    type="text"
-                                    onChange={handleNameChange}
-                                    className="text-input"
-                                    name="firstname"
-                                    id="firstname"
-                                    value={name.firstName}
-                                    placeholder="First Name"
-                                    tabIndex="1"
-                                />
-                            </fieldset>
-                            <fieldset>
-                                <label htmlFor="lastname" className="lastname">Lastname</label>
-                                <input
-                                    type="text"
-                                    onChange={handleNameChange}
-                                    className="text-input"
-                                    name="lastname"
-                                    id="lastname"
-                                    value={name.lastName}
-                                    placeholder="Last Name"
-                                    tabIndex="2"
-                                />
-                            </fieldset>
-                        </div>
-                        <Email index="3" onChange={handleEmailChange} />
-                        <Username index="4" onChange={handleUsernameChange} />
-                        <ShowAndHidePassword index="5" onChange={handlePasswordChange} />
+                        <Email index="1" onChange={handleEmailChange} />
+                        <Username index="2" onChange={handleUsernameChange} />
+                        <ShowAndHidePassword index="3" onChange={handlePasswordChange} />
                     </div>
                     <input
                         type="submit"
                         disabled={isFormValid}
                         className="button form-submit"
-                        tabindex="6"
+                        tabindex="4"
                         value="Create account"
                     />
                     {/* <input type="submit" className="button form-submit" tabIndex="6" /> */}
