@@ -13,13 +13,13 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-public class userLogutInterface implements LogoutHandler {
+public class UserLogutService implements LogoutHandler {
 
     private final TokenService tokenService;
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-        final String authHeader = request.getHeader("Authroization");
+        final String authHeader = request.getHeader("Authorization");
         final String jwt;
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return;

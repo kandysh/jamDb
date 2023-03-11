@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ContentController {
     private final ContentService contentService;
     @GetMapping("/list")
-    public Iterable<?> list(){
+    public Iterable<?> list() {
         return contentService.listAllContent();
     }
 

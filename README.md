@@ -21,3 +21,5 @@ main prefix api/v1
 - /auth 
   - /register - creates a new user returns username email and jwt token
   - /login - authenticates a user returns username email and jwt token
+
+65.0.204.71:3000/anime

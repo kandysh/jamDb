@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -14,12 +16,18 @@ import java.util.List;
 public class ContentService implements ContentServiceInterface{
     private final ContentRepository contentRepository;
     @Override
-    public Iterable<Content> saveAllContent(List<Content> contents) {
-        return contentRepository.saveAll(contents);
+    public void saveAllContent(List<Content> contents) {
+        contentRepository.saveAll(contents);
     }
 
     @Override
-    public Iterable<Content> listAllContent() {
+    public List<Content> listAllContent() {
+//        Pageable pageable = PageRequest.of(0,10);
         return contentRepository.findAll();
+    }
+
+    @Override
+    public Optional<Content> findContent(UUID uuid) {
+        return contentRepository.findById(uuid);
     }
 }

@@ -16,6 +16,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 
 public class Content extends BaseEntity{
     @org.hibernate.annotations.Type(ListArrayType.class)
@@ -31,6 +32,9 @@ public class Content extends BaseEntity{
     private Season animeSeason;
     private String picture;
     private String thumbnail;
+    @Lob
+    @Column(nullable = true)
+    private byte[] description;
     @org.hibernate.annotations.Type(ListArrayType.class)
     @Column(columnDefinition = "text[]")
     private List<String> synonyms;

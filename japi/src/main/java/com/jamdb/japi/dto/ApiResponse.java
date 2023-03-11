@@ -5,10 +5,10 @@ import lombok.*;
 import java.time.LocalDate;
 
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 @ToString
 @EqualsAndHashCode
+@AllArgsConstructor
 public class ApiResponse {
     private LocalDate localDate;
     private String message;

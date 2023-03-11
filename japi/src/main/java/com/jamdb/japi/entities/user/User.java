@@ -38,14 +38,17 @@ public class User extends BaseEntity implements UserDetails {
 
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
-    @ManyToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(name="user_anime",joinColumns = @JoinColumn(name = "user_id"),inverseJoinColumns = @JoinColumn(name = "anime_id"))
-    private Set<Content> animes = new HashSet<>();
+    private Set<Content> anime = new HashSet<>();
 
     public void setUserRole(String userRole) {
         this.userRole = UserRole.valueOf(userRole.toUpperCase());
     }
 
+    public void setAnime(Content content){
+        anime.add(content);
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(new SimpleGrantedAuthority(userRole.name()));

@@ -19,22 +19,14 @@ public class AuthController {
     private final UserServiceInterface userService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> newUserRegistration(@RequestBody @Valid NewUserDto userDto) {
+    public ResponseEntity<?> newUserRegistration(@RequestBody @Valid NewUserDto userDto) throws UserAuthException {
 
-        try {
             return ResponseEntity.ok(userService.registerNewUser(userDto));
-        } catch (UserAuthException | RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiResponse("user already exists " + userDto.getUserName()));
-        }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@RequestBody UserAuthDto userAuthDto) {
-        try {
+    public ResponseEntity<?> authenticateUser(@RequestBody UserAuthDto userAuthDto) throws UserAuthException {
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(userService.authenticateUser(userAuthDto));
-        } catch (UserAuthException | RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(e.getMessage()));
-        }
     }
     @PostMapping("/checkuser/{:username}")
     public ResponseEntity<?> checkUsername(@PathVariable String username){
