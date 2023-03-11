@@ -1,3 +1,5 @@
+@import 'root';
+
 form,
 fieldset {
     margin: 0;
@@ -21,7 +23,7 @@ fieldset {
 label {
     display: block;
     margin: 14px 0 4px;
-    color: #0d0c22;
+    color: $text-color-dark1;
     font: bold 16px/24px "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 input.text-input {
@@ -37,9 +39,9 @@ input.button {
 }
 
 input:focus {
-    border-color: rgba(234, 76, 137, 0.4);
+    border-color: $accent-color-light-40;
     background-color: #fff;
-    box-shadow: 0 0 0 4px rgba(234, 76, 137, 0.1);
+    box-shadow: 0 0 0 4px $accent-color-light-shadow;
 }
 .password_div {
     display: flex;
@@ -73,10 +75,20 @@ input:focus {
     line-height: 20px;
 }
 .form-submit:hover {
-    background-color: #e24c89;
+    background-color: $accent-color-light1;
     color: #fff;
 }
 
 .fieldset{
     justify-content: flex-start;
+}
+
+.signup{
+    margin: 10vh auto;
+    width: 60vh;
+}
+
+.login{
+    margin: 10vh auto;
+    width: 60vh;
 }

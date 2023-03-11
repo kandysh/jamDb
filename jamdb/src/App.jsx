@@ -5,36 +5,32 @@ import './scss/Root.scss';
 
 import Login from './components/Login';
 import Signup from './components/Signup';
-import Grid from './components/Grid';
 import Home from './components/Home';
-import MediaCard from './components/MediaCard';
-import MediaCarousel from './components/MediaCarousel.jsx';
-import MediaPage from './pages/MediaPage';
+import { setAuthToken } from './helpers/setAuthToken';
+import Navbar from './components/Navbar';
+
+import { history } from './helpers/history';
 
 function App() {
+
+  const token = localStorage.getItem("token");
+  if (token) {
+    setAuthToken(token);
+  }
+
+
   return (
-    <BrowserRouter>
+    <BrowserRouter history={history}>
 
       <div className="App">
-        {/* <header className="App-header">
-          <h2>JamDB</h2>
-        </header> */}
-        <MediaPage/>
-        {/* <MediaCarousel/> */}
-        {/* <MediaCard/> */}
-        {/* <Grid /> */}
-        <div className="main-container">
-          <div className="left">
-            {/* <Login /> */}
-          </div>
-          <div className="right">
-            {/* <Signup /> */}
-          </div>
-        </div>
+        <Navbar />
+
       </div>
 
       <Routes>
-        <Route path='\' exact element={<Home/>}/>
+        <Route path='\' exact  />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signUp" element={<Signup />} />
       </Routes>
     </BrowserRouter>
   );
