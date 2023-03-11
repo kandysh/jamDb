@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ContentController {
     private final ContentService contentService;
+
     @GetMapping("/list")
     public ResponseEntity<?> list() {
         return ResponseEntity.ok(contentService.listAllContent());

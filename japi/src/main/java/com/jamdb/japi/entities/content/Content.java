@@ -1,16 +1,13 @@
 package com.jamdb.japi.entities.content;
 
 import com.jamdb.japi.entities.BaseEntity;
-import com.jamdb.japi.entities.user.User;
 import io.hypersistence.utils.hibernate.type.array.ListArrayType;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
-import java.util.UUID;
 
+@SuppressWarnings("ALL")
 @EqualsAndHashCode(callSuper = false)
 @Entity(name = "anime")
 @Builder
@@ -19,7 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @ToString
 
-public class Content extends BaseEntity implements Comparable<Content>{
+public class Content extends BaseEntity implements Comparable<Content> {
     @org.hibernate.annotations.Type(ListArrayType.class)
     @Column(columnDefinition = "text[]")
     private List<String> sources;
@@ -34,7 +31,7 @@ public class Content extends BaseEntity implements Comparable<Content>{
     private String picture;
     private String thumbnail;
     @Lob
-    @Column(nullable = true)
+    @Column
     private byte[] description;
     @org.hibernate.annotations.Type(ListArrayType.class)
     @Column(columnDefinition = "text[]")
@@ -47,10 +44,11 @@ public class Content extends BaseEntity implements Comparable<Content>{
 
     private List<String> tags;
 
-    public void setType(String type){
+    public void setType(String type) {
         this.type = Type.valueOf(type);
     }
-    public void setStatus(String status){
+
+    public void setStatus(String status) {
         this.status = Status.valueOf(status);
     }
 

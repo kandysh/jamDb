@@ -3,7 +3,9 @@ package com.jamdb.japi.entities.reviews;
 import com.jamdb.japi.entities.BaseEntity;
 import com.jamdb.japi.entities.content.Content;
 import com.jamdb.japi.entities.user.User;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Lob;
+import jakarta.persistence.OneToOne;
 import lombok.*;
 
 @EqualsAndHashCode(callSuper = false)

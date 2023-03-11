@@ -17,8 +17,9 @@ import java.util.UUID;
 @Service
 @Transactional
 @AllArgsConstructor
-public class ContentService implements ContentServiceInterface{
+public class ContentService implements ContentServiceInterface {
     private final ContentRepository contentRepository;
+
     @Override
     public void saveAllContent(List<Content> contents) {
         contentRepository.saveAll(contents);
@@ -28,8 +29,8 @@ public class ContentService implements ContentServiceInterface{
     public List<Content> listAllContent() {
         Random random = new Random();
         var rand = random.nextInt(30);
-        Pageable pageable = PageRequest.of(rand,25);
-        Page<Content> randomSample= contentRepository.findAll(pageable);
+        Pageable pageable = PageRequest.of(rand, 25);
+        Page<Content> randomSample = contentRepository.findAll(pageable);
         return randomSample.getContent();
     }
 

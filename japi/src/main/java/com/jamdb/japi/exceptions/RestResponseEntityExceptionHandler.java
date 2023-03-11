@@ -12,11 +12,12 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {RuntimeException.class})
-    protected ResponseEntity<?> handleConflict(RuntimeException ex, WebRequest request){
+    protected ResponseEntity<?> handleConflict(RuntimeException ex, WebRequest request) {
         return new ResponseEntity<>(new ApiResponse(ex.getMessage()), HttpStatus.CONFLICT);
     }
+
     @ExceptionHandler(value = {UserAuthException.class})
-    protected ResponseEntity<?> handleUserAuthException(UserAuthException ex,WebRequest request){
+    protected ResponseEntity<?> handleUserAuthException(UserAuthException ex, WebRequest request) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiResponse(ex.getMessage()));
     }
 }

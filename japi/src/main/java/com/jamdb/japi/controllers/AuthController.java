@@ -21,15 +21,16 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> newUserRegistration(@RequestBody @Valid NewUserDto userDto) throws UserAuthException {
 
-            return ResponseEntity.ok(userService.registerNewUser(userDto));
+        return ResponseEntity.ok(userService.registerNewUser(userDto));
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody UserAuthDto userAuthDto) throws UserAuthException {
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(userService.authenticateUser(userAuthDto));
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(userService.authenticateUser(userAuthDto));
     }
+
     @PostMapping("/checkuser/{:username}")
-    public ResponseEntity<?> checkUsername(@PathVariable String username){
+    public ResponseEntity<?> checkUsername(@PathVariable String username) {
         return ResponseEntity.ok(new ApiResponse(userService.userExists(username) ? "true" : "false"));
     }
 

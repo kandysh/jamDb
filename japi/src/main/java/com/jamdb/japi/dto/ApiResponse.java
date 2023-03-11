@@ -12,9 +12,10 @@ import java.time.LocalDate;
 public class ApiResponse {
     private LocalDate localDate;
     private String message;
-    public ApiResponse(String message){
-        this.message=message;
-        localDate=LocalDate.now();
+
+    public ApiResponse(String message) {
+        this.message = message;
+        localDate = LocalDate.now();
     }
 
 }

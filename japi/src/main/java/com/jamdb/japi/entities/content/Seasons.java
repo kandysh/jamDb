@@ -1,5 +1,5 @@
 package com.jamdb.japi.entities.content;
 
 public enum Seasons {
-    SPRING,SUMMER,FALL,WINTER,UNDEFINED
+    SPRING, SUMMER, FALL, WINTER, UNDEFINED
 }

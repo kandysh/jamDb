@@ -2,8 +2,6 @@ package com.jamdb.japi.dto;
 
 import lombok.*;
 
-import java.util.UUID;
-
 @Data
 @Builder
 @AllArgsConstructor

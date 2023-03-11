@@ -10,5 +10,6 @@ public interface ContentServiceInterface {
     void saveAllContent(List<Content> contents);
 
     List<Content> listAllContent();
+
     Optional<Content> findContent(UUID uuid);
 }
