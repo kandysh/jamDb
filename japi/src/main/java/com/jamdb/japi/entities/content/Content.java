@@ -9,6 +9,7 @@ import lombok.*;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @EqualsAndHashCode(callSuper = false)
 @Entity(name = "anime")
@@ -18,7 +19,7 @@ import java.util.Set;
 @NoArgsConstructor
 @ToString
 
-public class Content extends BaseEntity{
+public class Content extends BaseEntity implements Comparable<Content>{
     @org.hibernate.annotations.Type(ListArrayType.class)
     @Column(columnDefinition = "text[]")
     private List<String> sources;
@@ -54,4 +55,8 @@ public class Content extends BaseEntity{
     }
 
 
+    @Override
+    public int compareTo(Content content) {
+        return this.getId().compareTo(content.getId());
+    }
 }

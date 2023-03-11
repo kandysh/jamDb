@@ -29,7 +29,7 @@ public class UserController {
     public ResponseEntity<?> showContent(@PathVariable String username) throws UserAuthException {
         return ResponseEntity.ok(userService.showContent(username).stream());
     }
-    @DeleteMapping("/update/{username}")
+    @DeleteMapping("/delete/{username}")
     public ResponseEntity<?> updateContent(@PathVariable String username,@RequestBody AddContentDto addContentDto){
         userService.deleteContent(username, UUID.fromString(addContentDto.getContentId()));
         return ResponseEntity.ok(new ApiResponse("deleted successfully"));

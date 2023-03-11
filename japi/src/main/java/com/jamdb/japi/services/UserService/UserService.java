@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -83,6 +84,8 @@ public class UserService implements UserServiceInterface {
 
     @Override
     public void deleteContent(String username, UUID fromString) {
+        var user = userRepository.findByUserName(username).orElseThrow();
+        user.setAnimeList(user.getAnime().stream().filter(content -> !content.getId().equals(fromString)).collect(Collectors.toSet()));
 
     }
 

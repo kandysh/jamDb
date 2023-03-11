@@ -49,6 +49,9 @@ public class User extends BaseEntity implements UserDetails {
     public void setAnime(Content content){
         anime.add(content);
     }
+    public void setAnimeList(Set<Content> animeList){
+        anime=animeList;
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(new SimpleGrantedAuthority(userRole.name()));
