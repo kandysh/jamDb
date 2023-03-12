@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../scss/card.scss';
 import AddIcon from '@mui/icons-material/Add';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -8,23 +9,30 @@ import user from '../helpers/apiUser';
 function Card(props) {
   const isLoggedIn = localStorage.getItem('isLoggedIn');
   const { item } = props;
+  const navigate = useNavigate();
 
 
   const handleLike = () => {
-    user.get('/user/like', {item.id})
+    user.get('/user/like', {
+      params: {
+        id: item.id,
+      },
+    })
       .then((res) => {
         console.log(res);
-      })
+      }
+      )
   };
 
   const handleWatchlist = () => {
-    user.post('/user/watchlist',
   };
 
   const handleClick = () => {
     console.log(item);
     console.log("inside media card");
-    return <MediaPage item={item} />;
+    // window.location.href = `/media/${item.id}`;
+    console.log(item.contentId);
+    navigate(`/media/${item.contentId}`);
 
   };
 
