@@ -3,6 +3,7 @@ import '../scss/card.scss';
 import AddIcon from '@mui/icons-material/Add';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MediaPage from '../pages/MediaPage';
+import user from '../helpers/apiUser';
 
 function Card(props) {
   const isLoggedIn = localStorage.getItem('isLoggedIn');
@@ -10,16 +11,19 @@ function Card(props) {
 
 
   const handleLike = () => {
-    // Handle like button click
+    user.get('/user/like', {item.id})
+      .then((res) => {
+        console.log(res);
+      })
   };
 
   const handleWatchlist = () => {
-    // Handle watchlist button click
+    user.post('/user/watchlist',
   };
 
   const handleClick = () => {
     console.log(item);
-    console.log(inside media card);
+    console.log("inside media card");
     return <MediaPage item={item} />;
 
   };
