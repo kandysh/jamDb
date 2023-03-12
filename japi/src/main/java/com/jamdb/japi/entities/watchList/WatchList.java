@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.*;
 
-@Entity
+@Entity(name = "watch_list")
 @Data
 @Builder
 @ToString

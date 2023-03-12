@@ -27,6 +27,11 @@ public class ContentService implements ContentServiceInterface {
 
     @Override
     public List<Content> listAllContent() {
+        return contentRepository.findAll();
+    }
+
+    @Override
+    public List<Content> listContent() {
         Random random = new Random();
         var rand = random.nextInt(30);
         Pageable pageable = PageRequest.of(rand, 25);

@@ -1,50 +1,31 @@
 package com.jamdb.japi.services.UserService;
 
-import com.jamdb.japi.dto.NewUserDto;
-import com.jamdb.japi.dto.UserAuthDto;
+import com.jamdb.japi.dto.AddAnimeDto;
 import com.jamdb.japi.dto.UserResponse;
+import com.jamdb.japi.entities.content.Content;
+import com.jamdb.japi.entities.reviews.Review;
 import com.jamdb.japi.entities.user.User;
-import com.jamdb.japi.entities.user.UserRole;
+import com.jamdb.japi.entities.watchList.Status;
+import com.jamdb.japi.entities.watchList.WatchList;
 import com.jamdb.japi.exceptions.UserAuthException;
+import com.jamdb.japi.repository.ReviewRepository;
 import com.jamdb.japi.repository.UserRepository;
-import com.jamdb.japi.security.config.JwtService;
+import com.jamdb.japi.repository.WatchListRepository;
 import com.jamdb.japi.services.ContentService.ContentServiceInterface;
-import com.jamdb.japi.services.TokenService.TokenService;
 import lombok.AllArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 @Service
 @Transactional
 @AllArgsConstructor
 public class UserService implements UserServiceInterface {
     private final UserRepository userRepository;
-    private final PasswordEncoder encoder;
-    private final JwtService jwtService;
-    private final AuthenticationManager authenticationManager;
-    private final TokenService tokenService;
     private final ContentServiceInterface contentService;
-
-    public boolean userExists(String userName) {
-        return userRepository.findByUserName(userName).isPresent();
-    }
-
-    @Override
-    public UserResponse registerNewUser(NewUserDto newUserDto) {
-        var user = User.builder()
-                .username(newUserDto.getUserName())
-                .email(newUserDto.getEmail())
-                .password(encoder.encode(newUserDto.getPassword()))
-                .userRole(UserRole.USER)
-                .build();
-        var savedUser = userRepository.save(user);
-        var jwtToken = jwtService.generateToken(user);
-        tokenService.saveUserToken(savedUser, jwtToken);
-        return UserResponse.builder().userName(user.getUsername()).email(user.getEmail()).token(jwtToken).build();
-    }
+    private final ReviewRepository reviewRepository;
+    private final WatchListRepository watchListRepository;
 
     @Override
     public UserResponse getUser(String userName) throws UserAuthException {
@@ -52,35 +33,30 @@ public class UserService implements UserServiceInterface {
         return UserResponse.builder().userName(user.getUsername()).email(user.getEmail()).token("").build();
     }
 
+
     @Override
-    public UserResponse authenticateUser(UserAuthDto userAuthDto) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userAuthDto.getUserName(), userAuthDto.getPassword()));
-        var user = userRepository.findByUserName(userAuthDto.getUserName()).orElseThrow();
-        var jwtToken = jwtService.generateToken(user);
-        tokenService.revokeAllUserTokens(user);
-        tokenService.saveUserToken(user, jwtToken);
-        return UserResponse.builder().userName(user.getUsername()).email(user.getEmail()).token(jwtToken).build();
+    public void addContentToUser(String username, AddAnimeDto addAnimeDto) {
+        User user = userRepository.findByUserName(username).orElseThrow();
+        Content content = contentService.findContent(UUID.fromString(addAnimeDto.getAnimeId())).orElseThrow();
+        Review review = reviewRepository.save(
+                Review
+                        .builder()
+                        .review(addAnimeDto.getReview().getBytes())
+                        .user(user)
+                        .content(content)
+                        .build()
+        );
+        WatchList newAnime = WatchList
+                .builder()
+                .user(user)
+                .content(content)
+                .review(review)
+                .status(Status.valueOf(addAnimeDto.getStatus().toUpperCase()))
+                .score(addAnimeDto.getScore())
+                .episodeProgress(addAnimeDto.getEpisodeProgress())
+                .totalEpisodes(content.getEpisodes())
+                .build();
+        watchListRepository.save(newAnime);
     }
-
-//    @Override
-//    public void addContent(String username, UUID content_id) {
-//        var currentUser = userRepository.findByUserName(username);
-//        contentService.findContent(content_id).ifPresent(content -> currentUser.ifPresent(user -> user.setAnime(content)));
-//    }
-
-//    @Override
-//    public List<Content> showContent(String username) throws UserAuthException {
-//        var currentUser = userRepository.findByUserName(username).orElseThrow();
-//        var contents = currentUser.getAnime();
-//        return contents.stream().toList();
-//    }
-//
-//    @Override
-//    public void deleteContent(String username, UUID fromString) {
-//        var user = userRepository.findByUserName(username).orElseThrow();
-//        user.setAnimeList(user.getAnime().stream().filter(content -> !content.getId().equals(fromString)).collect(Collectors.toSet()));
-//
-//    }
-
 
 }

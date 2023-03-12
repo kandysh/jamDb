@@ -11,5 +11,7 @@ public interface ContentServiceInterface {
 
     List<Content> listAllContent();
 
+    List<Content> listContent();
+
     Optional<Content> findContent(UUID uuid);
 }
