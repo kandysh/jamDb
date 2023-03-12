@@ -5,7 +5,6 @@ import com.jamdb.japi.entities.content.Content;
 import com.jamdb.japi.entities.user.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Lob;
 import jakarta.persistence.OneToOne;
 import lombok.*;
 

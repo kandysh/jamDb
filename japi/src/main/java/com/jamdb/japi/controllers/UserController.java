@@ -20,8 +20,9 @@ public class UserController {
     public ResponseEntity<UserResponse> getUser(@PathVariable String username) throws UserAuthException {
         return ResponseEntity.ok(userService.getUser(username));
     }
+
     @GetMapping("/view/{username}")
-    public ResponseEntity<List<AnimeDetailsDto>> getAllContent(@PathVariable String username){
+    public ResponseEntity<List<AnimeDetailsDto>> getAllContent(@PathVariable String username) {
         return ResponseEntity.ok(userService.showAnimesOfUser(username));
     }
 
@@ -36,9 +37,10 @@ public class UserController {
         userService.editContentofUser(username, animeDto);
         return ResponseEntity.ok(new ApiResponse("edit content of user " + username));
     }
+
     @DeleteMapping("/delete/{username}")
-    public ResponseEntity<ApiResponse> deleteAnime(@PathVariable String username, @RequestBody ContentIdDto contentIdDto){
+    public ResponseEntity<ApiResponse> deleteAnime(@PathVariable String username, @RequestBody ContentIdDto contentIdDto) {
         userService.deleteContentofUser(username, contentIdDto.getContentId());
         return ResponseEntity.ok(new ApiResponse("deleted content of user " + username));
-}
+    }
 }

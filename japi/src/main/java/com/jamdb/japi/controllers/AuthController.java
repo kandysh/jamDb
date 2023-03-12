@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     private final AuthServiceInterface authService;
 
-    @PostMapping(value = "/register",produces = {"application/json"})
+    @PostMapping(value = "/register", produces = {"application/json"})
     public ResponseEntity<UserResponse> newUserRegistration(@RequestBody @Valid NewUserDto userDto) throws UserAuthException {
 
         return ResponseEntity.ok(authService.registerNewUser(userDto));

@@ -5,11 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jamdb.japi.entities.content.Content;
 import com.jamdb.japi.services.ContentService.ContentServiceInterface;
 import lombok.RequiredArgsConstructor;
-import net.sandrohc.jikan.Jikan;
-import net.sandrohc.jikan.exception.JikanQueryException;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,7 +17,7 @@ public class UtilBeans {
 
     private final ContentServiceInterface contentService;
 
-//    @Bean
+    //    @Bean
     CommandLineRunner runner() {
         return args -> {
             ObjectMapper mapper = new ObjectMapper();

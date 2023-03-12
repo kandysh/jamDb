@@ -66,8 +66,9 @@ public class ContentService implements ContentServiceInterface {
         contentRepository.save(content);
         return content;
     }
+
     @Override
-    public ContentDetailsDto getContent(String contentId){
+    public ContentDetailsDto getContent(String contentId) {
         var content = contentRepository.findById(UUID.fromString(contentId)).orElseThrow();
         return ContentDetailsDto
                 .builder()
@@ -81,5 +82,40 @@ public class ContentService implements ContentServiceInterface {
                 .contentStatus(content.getStatus())
                 .score(content.getScore())
                 .build();
+    }
+
+    @Override
+    public List<ContentDetailsDto> getContentForSearchQuery(String query) {
+        return contentRepository.findContentBySynonymsAndTitle(query).stream().map(content -> ContentDetailsDto
+                .builder()
+                .contentId(content.getId().toString())
+                .title(content.getTitle())
+                .picture(content.getPicture())
+                .description(content.getDescription())
+                .thumbnail(content.getThumbnail())
+                .totalEpisodes(content.getEpisodes())
+                .type(content.getType())
+                .contentStatus(content.getStatus())
+                .score(content.getScore())
+                .build()).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ContentDetailsDto> getRecommendations(String contentId) {
+        var contents = contentRepository.findById(UUID.fromString(contentId)).orElseThrow();
+        if (contents.getRelations().isEmpty())
+            return new ArrayList<>();
+        return contents.getRelations().stream().limit(5).map(contentRepository::findContentBySourcesMatches).map(content -> ContentDetailsDto
+                .builder()
+                .contentId(content.getId().toString())
+                .title(content.getTitle())
+                .picture(content.getPicture())
+                .description(content.getDescription())
+                .thumbnail(content.getThumbnail())
+                .totalEpisodes(content.getEpisodes())
+                .type(content.getType())
+                .contentStatus(content.getStatus())
+                .score(content.getScore())
+                .build()).collect(Collectors.toList());
     }
 }

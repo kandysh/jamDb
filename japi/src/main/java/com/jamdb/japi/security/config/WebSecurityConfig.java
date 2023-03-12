@@ -20,6 +20,7 @@ public class WebSecurityConfig {
     private final JwtAuthenticationFilter jwtAuthFilter;
 
     private final UserLogutService userLogutService;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http

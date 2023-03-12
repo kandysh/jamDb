@@ -19,9 +19,21 @@ public class ContentController {
     public ResponseEntity<List<ContentDetailsDto>> getContentList() {
         return ResponseEntity.ok(contentService.listContent());
     }
-    @GetMapping("/{contentId}")
-    public ResponseEntity<ContentDetailsDto> getContent(@PathVariable String contentId){
+
+    @GetMapping("/show/{contentId}")
+    public ResponseEntity<ContentDetailsDto> getContent(@PathVariable String contentId) {
         return ResponseEntity.ok(contentService.getContent(contentId));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<ContentDetailsDto>> getContentOnQuery(@RequestParam("q") String query) {
+
+        return ResponseEntity.ok(contentService.getContentForSearchQuery(query));
+    }
+
+    @GetMapping("/recommendation/{contentId}")
+    public ResponseEntity<List<ContentDetailsDto>> getRecommendations(@PathVariable String contentId) {
+        return ResponseEntity.ok(contentService.getRecommendations(contentId));
     }
 
 }

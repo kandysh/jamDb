@@ -19,4 +19,8 @@ public interface ContentServiceInterface {
     Content saveContent(Content content);
 
     ContentDetailsDto getContent(String contentId);
+
+    List<ContentDetailsDto> getContentForSearchQuery(String query);
+
+    List<ContentDetailsDto> getRecommendations(String contentId);
 }

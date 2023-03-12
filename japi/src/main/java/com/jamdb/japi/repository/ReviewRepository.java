@@ -10,5 +10,5 @@ import java.util.UUID;
 
 public interface ReviewRepository extends JpaRepository<Review, UUID> {
     @Query("select r from Review r where r.user=?1 and r.content=?2")
-    public Review getReviewByUserAndContent(User user, Content content);
+    Review getReviewByUserAndContent(User user, Content content);
 }
