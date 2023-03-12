@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import '../scss/form.scss'
 import Username from './form/Username';
 import ShowAndHidePassword from './form/ShowAndHidePassword';
+import axios from 'axios';
 
 function Login() {
+
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
@@ -14,8 +16,21 @@ function Login() {
     const [isFormValid, setIsFormValid] = useState(false);
 
     const handleUsernameChange = (value, isValid) => {
-        setUsername(value);
-        setUsernameValid(isValid);
+        if (isValid) {
+            setUsername(value);
+            axios.post("/api/v1/auth/checkuser/" + username, {
+            }).then((response) => {
+                if (response.data == "true") {
+                    setUsernameValid(false);
+                }
+                else {
+                    setUsernameValid(true);
+                }
+            })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
 
     };
 
@@ -30,13 +45,7 @@ function Login() {
         setIsFormValid(usernameValid && passwordValid);
 
         if (isFormValid) {
-            fetch("/api/login", {
-                method: "POST",
-                body: JSON.stringify({ username, password }),
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            })
+            axios.post("/api/v1/auth/login", { username, password })
                 .then((response) => {
                     if (!response.ok) {
                         throw new Error("Invalid username or password");
@@ -44,8 +53,10 @@ function Login() {
                     return response.json();
                 })
                 .then((data) => {
-                    alert("You have successfully logged in");
-                    // do something with the login response
+                    const token = response.data.token;
+                    localStorage.setItem("token", token);
+                    window.location.href = '/'
+
                 })
                 .catch((error) => {
                     setLoginError(error.message);
@@ -59,7 +70,7 @@ function Login() {
 
     return (
         <section className="login">
-            <h2>Sign in to Anime-List</h2>
+            <h2>Login </h2>
             <div className="sign-in">
                 <form action="sign-in-form" onSubmit={handleSubmit} acceptCharset='UTF-8' method='post'>
                     {loginError && <div>{loginError}</div>}
