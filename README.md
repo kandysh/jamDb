@@ -16,10 +16,4 @@ For testing we are using main database as in memory databases don't provide the 
 
 
 Api Endpoints
-main prefix api/v1
-- /user/:username - provides details of a user ; needs JWT token
-- /auth 
-  - /register - creates a new user returns username email and jwt token
-  - /login - authenticates a user returns username email and jwt token
-
-65.0.204.71:3000/anime
+https://kandysh.gitbook.io/jamdbapi/

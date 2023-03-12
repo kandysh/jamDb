@@ -3,6 +3,7 @@ package com.jamdb.japi.entities.reviews;
 import com.jamdb.japi.entities.BaseEntity;
 import com.jamdb.japi.entities.content.Content;
 import com.jamdb.japi.entities.user.User;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Lob;
 import jakarta.persistence.OneToOne;
@@ -15,8 +16,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Review extends BaseEntity {
-    @Lob
-    private byte[] review;
+    @Column(columnDefinition = "TEXT")
+    private String review;
 
     @OneToOne
     private Content content;

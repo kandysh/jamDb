@@ -3,17 +3,26 @@ package com.jamdb.japi.utils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jamdb.japi.entities.content.Content;
-import com.jamdb.japi.services.ContentService.ContentService;
+import com.jamdb.japi.services.ContentService.ContentServiceInterface;
+import lombok.RequiredArgsConstructor;
+import net.sandrohc.jikan.Jikan;
+import net.sandrohc.jikan.exception.JikanQueryException;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
 //@Configuration
-public class JsonSeeder {
-    //    @Bean
-    CommandLineRunner runner(ContentService contentService) {
+@RequiredArgsConstructor
+public class UtilBeans {
+
+    private final ContentServiceInterface contentService;
+
+//    @Bean
+    CommandLineRunner runner() {
         return args -> {
             ObjectMapper mapper = new ObjectMapper();
             TypeReference<List<Content>> typeReference = new TypeReference<List<Content>>() {
@@ -27,4 +36,5 @@ public class JsonSeeder {
             }
         };
     }
+
 }

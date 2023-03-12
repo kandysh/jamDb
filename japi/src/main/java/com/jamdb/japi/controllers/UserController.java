@@ -1,14 +1,13 @@
 package com.jamdb.japi.controllers;
 
-import com.jamdb.japi.dto.AddContentDto;
-import com.jamdb.japi.dto.ApiResponse;
+import com.jamdb.japi.dto.*;
 import com.jamdb.japi.exceptions.UserAuthException;
 import com.jamdb.japi.services.UserService.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -16,26 +15,29 @@ import java.util.UUID;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/{username}")
-    public ResponseEntity<?> getUser(@PathVariable String username) throws UserAuthException {
+    @GetMapping("/details/{username}")
+    public ResponseEntity<UserResponse> getUser(@PathVariable String username) throws UserAuthException {
         return ResponseEntity.ok(userService.getUser(username));
+    }
+    @GetMapping("/view/{username}")
+    public ResponseEntity<List<AnimeDetailsDto>> getAllContent(@PathVariable String username){
+        return ResponseEntity.ok(userService.showAnimesOfUser(username));
     }
 
     @PostMapping("add/{username}")
-    public ResponseEntity<?> addContent(@PathVariable String username, @RequestBody AddContentDto addContentDto) {
-        userService.addContent(username, UUID.fromString(addContentDto.getContentId()));
-        return ResponseEntity.ok(new ApiResponse("content added successfully"));
+    public ResponseEntity<ApiResponse> addAnime(@PathVariable String username, @RequestBody AnimeDto animeDto) {
+        userService.addContentToUser(username, animeDto);
+        return ResponseEntity.ok(new ApiResponse("addedd content to user " + username));
     }
 
-    @GetMapping("view/{username}")
-    public ResponseEntity<?> showContent(@PathVariable String username) throws UserAuthException {
-        return ResponseEntity.ok(userService.showContent(username).stream());
+    @PatchMapping("update/{username}")
+    public ResponseEntity<ApiResponse> editAnime(@PathVariable String username, @RequestBody AnimeDto animeDto) {
+        userService.editContentofUser(username, animeDto);
+        return ResponseEntity.ok(new ApiResponse("edit content of user " + username));
     }
-
-    @DeleteMapping("/delete/{username}")
-    public ResponseEntity<?> updateContent(@PathVariable String username, @RequestBody AddContentDto addContentDto) {
-        userService.deleteContent(username, UUID.fromString(addContentDto.getContentId()));
-        return ResponseEntity.ok(new ApiResponse("deleted successfully"));
-    }
-
+    @DeleteMapping("delete/{username}")
+    public ResponseEntity<ApiResponse> deleteAnime(@PathVariable String username, @RequestBody ContentIdDto contentIdDto){
+        userService.deleteContentofUser(username, contentIdDto.getContentId());
+        return ResponseEntity.ok(new ApiResponse("deleted content of user " + username));
+}
 }
