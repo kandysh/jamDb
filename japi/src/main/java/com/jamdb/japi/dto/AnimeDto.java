@@ -9,11 +9,11 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 @AllArgsConstructor
-public class AddAnimeDto {
-    private String animeId;
+public class AnimeDto {
+    private String contentId;
 
     private String status;
-    private int score;
+    private double score;
 
     private int episodeProgress;
 

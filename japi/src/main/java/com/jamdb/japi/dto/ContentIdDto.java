@@ -7,6 +7,6 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 @NoArgsConstructor
-public class AddContentDto {
+public class ContentIdDto {
     private String contentId;
 }

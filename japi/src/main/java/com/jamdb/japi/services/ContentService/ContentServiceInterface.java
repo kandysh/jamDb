@@ -1,5 +1,6 @@
 package com.jamdb.japi.services.ContentService;
 
+import com.jamdb.japi.dto.ContentDetailsDto;
 import com.jamdb.japi.entities.content.Content;
 
 import java.util.List;
@@ -11,7 +12,11 @@ public interface ContentServiceInterface {
 
     List<Content> listAllContent();
 
-    List<Content> listContent();
+    List<ContentDetailsDto> listContent();
 
     Optional<Content> findContent(UUID uuid);
+
+    Content saveContent(Content content);
+
+    ContentDetailsDto getContent(String contentId);
 }
