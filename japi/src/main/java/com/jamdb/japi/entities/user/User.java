@@ -1,7 +1,6 @@
 package com.jamdb.japi.entities.user;
 
 import com.jamdb.japi.entities.BaseEntity;
-import com.jamdb.japi.entities.content.Content;
 import com.jamdb.japi.entities.token.Token;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -11,7 +10,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 @Entity(name = "users")
 @Builder
@@ -38,20 +39,9 @@ public class User extends BaseEntity implements UserDetails {
 
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
-    @OneToMany
-    @JoinTable(name = "user_anime", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "anime_id"))
-    private Set<Content> anime = new HashSet<>();
 
     public void setUserRole(String userRole) {
         this.userRole = UserRole.valueOf(userRole.toUpperCase());
-    }
-
-    public void setAnime(Content content) {
-        anime.add(content);
-    }
-
-    public void setAnimeList(Set<Content> animeList) {
-        anime = animeList;
     }
 
     @Override
