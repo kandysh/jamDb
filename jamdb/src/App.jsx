@@ -10,6 +10,7 @@ import { setAuthToken } from './helpers/setAuthToken';
 import Navbar from './components/Navbar';
 
 import { history } from './helpers/history';
+import Grid from './components/Grid';
 
 function App() {
 
@@ -24,11 +25,10 @@ function App() {
 
       <div className="App">
         <Navbar />
-
       </div>
 
       <Routes>
-        <Route path='\' exact  />
+        <Route path='/' exact element={<Grid/>}  />
         <Route path="/login" element={<Login />} />
         <Route path="/signUp" element={<Signup />} />
       </Routes>

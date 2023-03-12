@@ -1,14 +1,15 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../helpers/api.jsx";
 import '../scss/form.scss'
 import Email from './form/Email';
 import ShowAndHidePassword from "./form/ShowAndHidePassword.jsx";
 import Username from './form/Username';
 
 function Signup() {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
 
     const [email, setEmail] = useState("");
-    const [username, setUsername] = useState("");
+    const [userName, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
 
@@ -19,51 +20,50 @@ function Signup() {
     const [FormError, setFormError] = useState(null);
     const [isFormValid, setIsFormValid] = useState(false);
 
-
-
     const handleEmailChange = (value, isValid) => {
-        setEmail(value);
+        setEmail(event.target.value);
         setEmailValid(isValid);
-        console.log("email change" + email);
     };
 
     const handleUsernameChange = (value, isValid) => {
-        setUsername(value);
+        setUsername(event.target.value);
         setUsernameValid(isValid);
-        console.log("username change" + username);
     };
 
     const handlePasswordChange = (value, isValid) => {
-        setPassword(value);
+        setPassword(event.target.value);
         setPasswordValid(isValid);
-        console.log("password change" + password);
     };
 
     const handleFormValidation = () => {
         setIsFormValid(emailValid && usernameValid && passwordValid);
-
-        console.log("email" + email);
-        console.log("username" + username);
-        console.log("password" + password);
     };
 
     const handleSubmit = (e) => {
-        alert("You have successfully logged in");
         handleFormValidation();
         e.preventDefault();
-        if (NameValid && emailValid && usernameValid && passwordValid) {
-            axios
-                .post("/api/signup", {
+
+        if (emailValid && usernameValid && passwordValid) {
+            api
+                .post("/auth/register", {
                     email,
-                    username,
+                    userName,
                     password,
                 })
                 .then((response) => {
-                    alert("You have successfully logged in");
-                    // do something with the response
+                    if (response.status === 200) {
+                        localStorage.setItem('token', response.data.token);
+                        localStorage.setItem('userName', userName);
+                        localStorage.setItem('isLoggedIn', true);
+                        setFormError("Sign up successful!");
+                        window.location.href = "/";
+                    } else {
+                        setFormError('SignUp failed. Please check your username and password.');
+                    }
                 })
                 .catch((error) => {
                     setFormError(error.response.data.message);
+                    setIsFormValid(false);
                 });
         } else {
             setIsFormValid(false);
@@ -85,9 +85,9 @@ function Signup() {
                     </div>
                     <input
                         type="submit"
-                        disabled={isFormValid}
+                        disabled={isFormValid && isLoggedin ? true : false}
                         className="button form-submit"
-                        tabindex="4"
+                        tabIndex="4"
                         value="Create account"
                     />
                     {/* <input type="submit" className="button form-submit" tabIndex="6" /> */}
@@ -98,3 +98,5 @@ function Signup() {
 }
 
 export default Signup    
+
+

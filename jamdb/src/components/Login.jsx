@@ -3,10 +3,11 @@ import '../scss/form.scss'
 import Username from './form/Username';
 import ShowAndHidePassword from './form/ShowAndHidePassword';
 import axios from 'axios';
+import api from '../helpers/api';
 
 function Login() {
 
-    const [username, setUsername] = useState("");
+    const [userName, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
     const [usernameValid, setUsernameValid] = useState(false);
@@ -16,54 +17,49 @@ function Login() {
     const [isFormValid, setIsFormValid] = useState(false);
 
     const handleUsernameChange = (value, isValid) => {
-        if (isValid) {
-            setUsername(value);
-            axios.post("/api/v1/auth/checkuser/" + username, {
-            }).then((response) => {
-                if (response.data == "true") {
-                    setUsernameValid(false);
-                }
-                else {
-                    setUsernameValid(true);
-                }
-            })
-                .catch((error) => {
-                    console.log(error);
-                });
-        }
-
+        setUsername(event.target.value);
+        setUsernameValid(isValid);
+        handleFormValidation();
     };
 
     const handlePasswordChange = (value, isValid) => {
-        setPassword(value);
+        setPassword(event.target.value);
         setPasswordValid(isValid);
+        handleFormValidation();
     };
 
+    const handleFormValidation = () => {
+        if (usernameValid && passwordValid)
+            setIsFormValid(true);
+        else
+            setIsFormValid(false);
+    };
 
     const handleSubmit = (e) => {
+        handleFormValidation();
         e.preventDefault();
-        setIsFormValid(usernameValid && passwordValid);
-
+        console.log('inside submit!');
         if (isFormValid) {
-            axios.post("/api/v1/auth/login", { username, password })
+            api.post("/auth/login", { userName, password })
                 .then((response) => {
-                    if (!response.ok) {
-                        throw new Error("Invalid username or password");
+                    console.log(response);
+                    if (response.status === 200) {
+                        console.log("inside 200")
+                        localStorage.setItem('token', response.data.token);
+                        localStorage.setItem('userName', userName);
+                        localStorage.setItem('isLoggedIn', true);
+                        setLoginError("Login successful ⚡⚡  ✔");
+                        window.location.href = '/';
+                    } else {
+                        setFormError('Login failed. Please check your userName and password.');
                     }
-                    return response.json();
-                })
-                .then((data) => {
-                    const token = response.data.token;
-                    localStorage.setItem("token", token);
-                    window.location.href = '/'
-
                 })
                 .catch((error) => {
                     setLoginError(error.message);
                 });
         } else {
             setIsFormValid(false);
-            setLoginError("Please enter a valid username and password. / loginError");
+            setLoginError("Please enter a valid userName and password. / loginError");
         }
     };
 
@@ -82,7 +78,7 @@ function Login() {
 
                     <input
                         type="submit"
-                        disabled={isFormValid}
+                        disabled={!isFormValid}
                         className="button form-submit"
                         tabIndex="3"
                         value="Login"

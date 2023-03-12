@@ -52,6 +52,7 @@ function ShowAndHidePassword(props) {
                     onBlur={handlePasswordBlur}
                     value={passwordInput}
                     className="text-input"
+                    autoComplete="current-password"
                     name="password"
                     id="password"
                     placeholder="Password"

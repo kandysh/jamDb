@@ -17,28 +17,7 @@ function Email(props) {
         setEmailError(isEmailValid ? "" : "Please enter a valid email address");
         props.onChange(email, isEmailValid);
     };
-
-    useEffect(() => {
-        if (email) {
-            // Check if email exists on API
-            setIsCheckingEmail(true);
-            fetch(`https://example.com/api/check-email/${email}`)
-                .then(response => response.json())
-                .then(data => {
-                    setIsCheckingEmail(false);
-                    if (data.exists) {
-                        setEmailExistsError("Email already exists. Please choose a different one.");
-                    } else {
-                        setEmailExistsError("");
-                    }
-                })
-                .catch(error => {
-                    setIsCheckingEmail(false);
-                    console.error(error);
-                });
-        }
-    }, [email]);
-
+    
     return (
         <div>
             <fieldset>

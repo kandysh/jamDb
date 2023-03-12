@@ -2,10 +2,22 @@ import { Button } from '@mui/material';
 import axios from 'axios';
 import React from 'react';
 import { BrowserRouter, Link } from 'react-router-dom';
+import user from '../helpers/apiUser';
 import '../scss/Navbar.scss';
 
 
 function Navbar() {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    const token = localStorage.getItem('token');
+
+    const handleLogout = () => {
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('token');
+        localStorage.removeItem('userName');
+        user.get('/auth/logout')
+        window.location.href = '/';
+    };
+
     const isLogin = () => {
         axios.get("/api/v1/auth")
             .then((res) => {
@@ -37,27 +49,38 @@ function Navbar() {
                     {/* <li className="nav-item active">
                         <a className="nav-link" href="#">Home <span className="sr-only">(current)</span></a>
                     </li>    */}
-                    <li className="nav-item">
-                        <a className="nav-link" href="#">
-                            <Link to="/login">
-                                <Button variant="contained" color="primary">Login</Button>
-                            </Link>
-                        </a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link" href="#">
-                            <Link to="/signup">
-                                <Button variant="contained" color="primary">SignUp</Button>
-                            </Link>
-                        </a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link" href="#">
-                            <Link to="/logout">
-                                <Button variant="contained" color="primary">Logout</Button>
-                            </Link>
-                        </a>
-                    </li>
+
+                    {isLoggedIn ? (
+                        <li className="nav-item">
+                            <a className="nav-link" href="#">
+
+                                <Button variant="contained" color="primary" onClick={handleLogout}>Logout</Button>
+
+                            </a>
+                        </li>
+                    ) : (
+                        <>
+                            <li className="nav-item">
+                                <a className="nav-link" href="#">
+                                    <Link to="/login">
+                                        <Button variant="contained" color="primary">Login</Button>
+                                    </Link>
+                                </a>
+                            </li>
+                            <li className="nav-item">
+                                <a className="nav-link" href="#">
+                                    <Link to="/signup">
+                                        <Button variant="contained" color="primary">SignUp</Button>
+                                    </Link>
+                                </a>
+                            </li>
+                        </>
+                    )}
+
+
+
+
+
                 </ul>
             </div>
         </nav>

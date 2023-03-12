@@ -1,7 +1,7 @@
 server:
   port: 3030
   servlet:
-    context-path: "/api/v1"
+    context-path: "/api/v2"
 spring:
   main:
     web-application-type: servlet

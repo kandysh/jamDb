@@ -19,7 +19,9 @@ $text-color-light1: #FFFFFF;
 $text-color-dark1: #0d0c22;
 
 
-
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 
 $mode: light; // or dark, depending on your preference

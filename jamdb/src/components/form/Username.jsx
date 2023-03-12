@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import api from "../../helpers/api";
 
 function Username(props) {
     const [username, setUsername] = useState("");
@@ -18,27 +19,6 @@ function Username(props) {
         props.onChange(username, isUsernameValid);
     };
 
-    // useEffect(() => {
-    //     if (username) {
-    //         // Check if username exists on API
-    //         setIsCheckingUsername(true);
-    //         fetch(`https://example.com/api/check-username/${username}`)
-    //             .then(response => response.json())
-    //             .then(data => {
-    //                 setIsCheckingUsername(false);
-    //                 if (data.exists) {
-    //                     setUsernameExistsError("Username already exists. Please choose a different one.");
-    //                 } else {
-    //                     setUsernameExistsError("");
-    //                 }
-    //             })
-    //             .catch(error => {
-    //                 setIsCheckingUsername(false);
-    //                 console.error(error);
-    //             });
-    //     }
-    // }, [username]);
-
     return (
         <div>
             <fieldset>
@@ -54,6 +34,7 @@ function Username(props) {
                 name="username" 
                 placeholder="Username"
                 value={username}
+                autoComplete="username"
                 onChange={handleUsernameChange}
                 tabIndex={props.index}
             />
