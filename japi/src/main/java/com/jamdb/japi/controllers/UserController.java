@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/user")
+@CrossOrigin
 public class UserController {
     private final UserService userService;
 
@@ -24,18 +25,18 @@ public class UserController {
         return ResponseEntity.ok(userService.showAnimesOfUser(username));
     }
 
-    @PostMapping("add/{username}")
+    @PostMapping("/add/{username}")
     public ResponseEntity<ApiResponse> addAnime(@PathVariable String username, @RequestBody AnimeDto animeDto) {
         userService.addContentToUser(username, animeDto);
         return ResponseEntity.ok(new ApiResponse("addedd content to user " + username));
     }
 
-    @PatchMapping("update/{username}")
+    @PatchMapping("/update/{username}")
     public ResponseEntity<ApiResponse> editAnime(@PathVariable String username, @RequestBody AnimeDto animeDto) {
         userService.editContentofUser(username, animeDto);
         return ResponseEntity.ok(new ApiResponse("edit content of user " + username));
     }
-    @DeleteMapping("delete/{username}")
+    @DeleteMapping("/delete/{username}")
     public ResponseEntity<ApiResponse> deleteAnime(@PathVariable String username, @RequestBody ContentIdDto contentIdDto){
         userService.deleteContentofUser(username, contentIdDto.getContentId());
         return ResponseEntity.ok(new ApiResponse("deleted content of user " + username));
