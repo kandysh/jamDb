@@ -1,20 +1,20 @@
 package com.jamdb.japi.services.UserService;
 
-import com.jamdb.japi.dto.NewUserDto;
-import com.jamdb.japi.dto.UserAuthDto;
+import com.jamdb.japi.dto.AnimeDetailsDto;
+import com.jamdb.japi.dto.AnimeDto;
 import com.jamdb.japi.dto.UserResponse;
 import com.jamdb.japi.entities.content.Content;
+import com.jamdb.japi.entities.reviews.Review;
 import com.jamdb.japi.entities.user.User;
-import com.jamdb.japi.entities.user.UserRole;
+import com.jamdb.japi.entities.watchList.Status;
+import com.jamdb.japi.entities.watchList.WatchList;
+import com.jamdb.japi.entities.watchList.WatchListId;
 import com.jamdb.japi.exceptions.UserAuthException;
+import com.jamdb.japi.repository.ReviewRepository;
 import com.jamdb.japi.repository.UserRepository;
-import com.jamdb.japi.security.config.JwtService;
+import com.jamdb.japi.repository.WatchListRepository;
 import com.jamdb.japi.services.ContentService.ContentServiceInterface;
-import com.jamdb.japi.services.TokenService.TokenService;
 import lombok.AllArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,29 +27,9 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class UserService implements UserServiceInterface {
     private final UserRepository userRepository;
-    private final PasswordEncoder encoder;
-    private final JwtService jwtService;
-    private final AuthenticationManager authenticationManager;
-    private final TokenService tokenService;
     private final ContentServiceInterface contentService;
-
-    public boolean userExists(String userName) {
-        return userRepository.findByUserName(userName).isPresent();
-    }
-
-    @Override
-    public UserResponse registerNewUser(NewUserDto newUserDto) {
-        var user = User.builder()
-                .username(newUserDto.getUserName())
-                .email(newUserDto.getEmail())
-                .password(encoder.encode(newUserDto.getPassword()))
-                .userRole(UserRole.USER)
-                .build();
-        var savedUser = userRepository.save(user);
-        var jwtToken = jwtService.generateToken(user);
-        tokenService.saveUserToken(savedUser, jwtToken);
-        return UserResponse.builder().userName(user.getUsername()).email(user.getEmail()).token(jwtToken).build();
-    }
+    private final ReviewRepository reviewRepository;
+    private final WatchListRepository watchListRepository;
 
     @Override
     public UserResponse getUser(String userName) throws UserAuthException {
@@ -57,35 +37,84 @@ public class UserService implements UserServiceInterface {
         return UserResponse.builder().userName(user.getUsername()).email(user.getEmail()).token("").build();
     }
 
+
     @Override
-    public UserResponse authenticateUser(UserAuthDto userAuthDto) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userAuthDto.getUserName(), userAuthDto.getPassword()));
-        var user = userRepository.findByUserName(userAuthDto.getUserName()).orElseThrow();
-        var jwtToken = jwtService.generateToken(user);
-        tokenService.revokeAllUserTokens(user);
-        tokenService.saveUserToken(user, jwtToken);
-        return UserResponse.builder().userName(user.getUsername()).email(user.getEmail()).token(jwtToken).build();
+    public void addContentToUser(String username, AnimeDto animeDto) {
+        User user = userRepository.findByUserName(username).orElseThrow();
+        Content content = contentService.findContent(UUID.fromString(animeDto.getContentId())).orElseThrow();
+        Review review = reviewRepository.save(
+                Review
+                        .builder()
+                        .review(animeDto.getReview())
+                        .user(user)
+                        .content(content)
+                        .build()
+        );
+        WatchList newAnime = WatchList
+                .builder()
+                .id(
+                        WatchListId
+                                .builder()
+                                .user(user)
+                                .content(content)
+                                .build()
+                )
+                .review(review)
+                .status(Status.valueOf(animeDto.getStatus().toUpperCase()))
+                .score(animeDto.getScore())
+                .episodeProgress(animeDto.getEpisodeProgress())
+                .totalEpisodes(content.getEpisodes())
+                .build();
+        watchListRepository.save(newAnime);
     }
 
     @Override
-    public void addContent(String username, UUID content_id) {
-        var currentUser = userRepository.findByUserName(username);
-        contentService.findContent(content_id).ifPresent(content -> currentUser.ifPresent(user -> user.setAnime(content)));
+    public void editContentofUser(String username, AnimeDto editAnimeDto) {
+        User user = userRepository.findByUserName(username).orElseThrow();
+        Content content = contentService.findContent(UUID.fromString(editAnimeDto.getContentId())).orElseThrow();
+        Review review = reviewRepository.getReviewByUserAndContent(user, content);
+        review.setReview(editAnimeDto.getReview());
+        reviewRepository.save(review);
+        WatchList anime = watchListRepository.findById(new WatchListId(user, content)).orElseThrow();
+        anime.setStatus(Status.valueOf(editAnimeDto.getStatus().toUpperCase()));
+        anime.setScore(editAnimeDto.getScore());
+        anime.setEpisodeProgress(editAnimeDto.getEpisodeProgress());
+        watchListRepository.save(anime);
     }
 
     @Override
-    public List<Content> showContent(String username) throws UserAuthException {
-        var currentUser = userRepository.findByUserName(username).orElseThrow();
-        var contents = currentUser.getAnime();
-        return contents.stream().toList();
+    public void deleteContentofUser(String username, String contentId) {
+        User user = userRepository.findByUserName(username).orElseThrow();
+        Content content = contentService.findContent(UUID.fromString(contentId)).orElseThrow();
+        Review review = reviewRepository.getReviewByUserAndContent(user, content);
+        reviewRepository.deleteById(review.getId());
+        watchListRepository.deleteById(WatchListId.builder().user(user).content(content).build());
     }
 
     @Override
-    public void deleteContent(String username, UUID fromString) {
-        var user = userRepository.findByUserName(username).orElseThrow();
-        user.setAnimeList(user.getAnime().stream().filter(content -> !content.getId().equals(fromString)).collect(Collectors.toSet()));
-
+    public List<AnimeDetailsDto> showAnimesOfUser(String username) {
+        User user = userRepository.findByUserName(username).orElseThrow();
+        var watchList = watchListRepository.findWatchListById_UserId(user.getId());
+        return watchList.stream().map(
+                anime -> {
+                    var content = contentService.findContent(anime.getId().getContent().getId()).orElseThrow();
+                    var review = reviewRepository.getReviewByUserAndContent(user, content);
+                    return AnimeDetailsDto
+                            .builder()
+                            .contentId(content.getId().toString())
+                            .title(content.getTitle())
+                            .type(content.getType())
+                            .picture(content.getPicture())
+                            .thumbnail(content.getThumbnail())
+                            .season(content.getAnimeSeason())
+                            .status(anime.getStatus())
+                            .contentStatus(content.getStatus())
+                            .episodeProgress(anime.getEpisodeProgress())
+                            .totalEpisodes(content.getEpisodes())
+                            .score(anime.getScore())
+                            .review(review.getReview())
+                            .build();
+                }).collect(Collectors.toList());
     }
-
 
 }

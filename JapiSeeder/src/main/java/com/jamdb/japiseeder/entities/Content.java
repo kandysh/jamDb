@@ -1,6 +1,5 @@
-package com.jamdb.japi.entities.content;
+package com.jamdb.japiseeder.entities;
 
-import com.jamdb.japi.entities.BaseEntity;
 import io.hypersistence.utils.hibernate.type.array.ListArrayType;
 import jakarta.persistence.*;
 import lombok.*;
