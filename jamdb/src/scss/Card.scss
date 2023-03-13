@@ -21,8 +21,8 @@
     background-image: url();
     
     img {
-      object-fit: fill;
-      object-position: 50% 50%;
+      object-fit: cover;
+      height: 100%;
       width: 100%;
     }
   }

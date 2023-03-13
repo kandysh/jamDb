@@ -1,31 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import Card from './Card';
 import api from '../helpers/api';
-import '../scss/grid.scss'
+import '../scss/grid.scss';
 
 function Grid() {
-  const [items, setItems] = useState([]);
+	const [items, setItems] = useState([]);
 
-  useEffect(() => {
-    api.get('/content/list')
-      .then(response => {
-        setItems(response.data);
-        console.log(response.data);
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }, []);
+	useEffect(() => {
+		const fetchAnime = async () => {
+			await api
+				.get('/content/list')
+				.then((response) => {
+					setItems(response.data);
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+		};
+		fetchAnime();
+	}, []);
 
-  return (
-    <section className="grid-container">
-      <div className="grid">
-        {items.map(item => (
-          <Card key={item.id} item={item} />
-        ))}
-      </div>
-    </section>
-  );
+	return (
+		<section className="grid-container">
+			<div className="grid">
+				{items.map((item) => (
+						<Card item={item} key={item.contentId}/>
+				))}
+			</div>
+		</section>
+	);
 }
 
 export default Grid;
