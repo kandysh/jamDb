@@ -28,12 +28,7 @@ function Card(props) {
   };
 
   const handleClick = () => {
-    console.log(item);
-    console.log("inside media card");
-    // window.location.href = `/media/${item.id}`;
-    console.log(item.contentId);
     navigate(`/media/${item.contentId}`);
-
   };
 
 

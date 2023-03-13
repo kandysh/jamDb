@@ -51,7 +51,7 @@ function Login() {
                         setLoginError("Login successful ⚡⚡  ✔");
                         window.location.href = '/';
                     } else {
-                        setFormError('Login failed. Please check your userName and password.');
+                        setLoginError('Login failed. Please check your userName and password.');
                     }
                 })
                 .catch((error) => {

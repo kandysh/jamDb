@@ -38,11 +38,11 @@ function Navbar() {
 
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
-            <a className="navbar-brand">
+            <span className="navbar-brand">
                 <Link to="/">
                     JamDb
                 </Link>
-            </a>
+            </span>
 
             <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav">
@@ -52,35 +52,22 @@ function Navbar() {
 
                     {isLoggedIn ? (
                         <li className="nav-item">
-                            <a className="nav-link" href="#">
-
-                                <Button variant="contained" color="primary" onClick={handleLogout}>Logout</Button>
-
-                            </a>
+                            <Button variant="contained" color="primary" onClick={handleLogout}>Logout</Button>
                         </li>
                     ) : (
                         <>
                             <li className="nav-item">
-                                <a className="nav-link" href="#">
-                                    <Link to="/login">
-                                        <Button variant="contained" color="primary">Login</Button>
-                                    </Link>
-                                </a>
+                                <Link to="/login">
+                                    <Button variant="contained" color="primary">Login</Button>
+                                </Link>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="#">
-                                    <Link to="/signup">
-                                        <Button variant="contained" color="primary">SignUp</Button>
-                                    </Link>
-                                </a>
+                                <Link to="/signup">
+                                    <Button variant="contained" color="primary">SignUp</Button>
+                                </Link>
                             </li>
                         </>
                     )}
-
-
-
-
-
                 </ul>
             </div>
         </nav>
