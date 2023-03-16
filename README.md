@@ -3,16 +3,9 @@
 
 Jam Db 
 
-Work in Progress
+Archived branch of the project
 
-Template - generated using vite
-
-------------------------
-Password Encryption with BCrypt
- -BCrypt works random salt, so each call will generate a different result.
-
-For testing we are using main database as in memory databases don't provide the full test
-
+Created with help of - InspiredEnigma12477
 
 
 Api Endpoints
