@@ -15,5 +15,16 @@ spring:
     properties:
       hibernate:
         format_sql: true
-    show-sql: true
+    show-sql: false
     open-in-view: false
+  mvc:
+    log-request-details: true
+logging:
+  level:
+    org:
+      springframework:
+        web : DEBUG
+      hibernate:
+        SQL : INFO
+  file:
+    name: F:/AwesomeProjects/jamDb/japi/log/jam-api.log
