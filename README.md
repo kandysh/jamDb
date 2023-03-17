@@ -5,8 +5,8 @@ Jam Db
 
 Archived branch of the project
 
-Created with help of - InspiredEnigma12477
 
 
-Api Endpoints
+v3-Api Endpoints
 https://kandysh.gitbook.io/jamdbapi/
+
