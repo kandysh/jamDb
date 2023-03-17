@@ -15,6 +15,7 @@ import com.jamdb.japi.repository.UserRepository;
 import com.jamdb.japi.repository.WatchListRepository;
 import com.jamdb.japi.services.ContentService.ContentServiceInterface;
 import lombok.AllArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

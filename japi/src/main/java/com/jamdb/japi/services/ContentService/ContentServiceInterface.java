@@ -22,5 +22,24 @@ public interface ContentServiceInterface {
 
     List<ContentDetailsDto> getContentForSearchQuery(String query);
 
-    List<ContentDetailsDto> getRecommendations(String contentId);
+    List<ContentDetailsDto> getRelated(String contentId);
+
+
+
+    List<ContentDetailsDto> getCurrentByStatus(String status);
+
+
+    List<ContentDetailsDto> getCurrentByType(String type);
+
+    List<ContentDetailsDto> getCurrentByStatusAndType(String status, String type);
+
+    List<ContentDetailsDto> getCurrentTopRated();
+
+    List<ContentDetailsDto> getTopContent(String type);
+
+    List<ContentDetailsDto> getTrending();
+
+    void addLikeToContent(String contentId);
+
+    void dislikeContent(String contentId);
 }

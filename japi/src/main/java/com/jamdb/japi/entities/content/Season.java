@@ -16,7 +16,7 @@ public class Season {
     @Enumerated(EnumType.STRING)
     private Seasons season;
     @Column(nullable = true)
-    private int year;
+    private Integer year;
 
     public void setSeason(String season) {
         this.season = Seasons.valueOf(season);

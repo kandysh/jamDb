@@ -15,8 +15,9 @@ public class ContentDetailsDto {
     private String picture;
     private String thumbnail;
     private String description;
-    private int totalEpisodes;
+    private Integer totalEpisodes;
     private Type type;
     private Status contentStatus;
-    private double score;
+    private Double score;
+    private Integer likes;
 }

@@ -16,8 +16,8 @@ public class Token extends BaseEntity {
     public String token;
     @Enumerated(EnumType.STRING)
     public TokenType tokenType = TokenType.BEARER;
-    public boolean revoked;
-    public boolean expired;
+    public Boolean revoked;
+    public Boolean expired;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

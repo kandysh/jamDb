@@ -13,9 +13,9 @@ public class AnimeDto {
     private String contentId;
 
     private String status;
-    private double score;
+    private Double score;
 
-    private int episodeProgress;
+    private Integer episodeProgress;
 
     private String review;
 }

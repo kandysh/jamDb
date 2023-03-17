@@ -17,13 +17,13 @@ public class WatchList {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    private double score;
+    private Double score;
 
     @Column(name = "episode_progress")
-    private int episodeProgress;
+    private Integer episodeProgress;
 
     @Column(name = "total_episodes")
-    private int totalEpisodes;
+    private Integer totalEpisodes;
 
     @OneToOne
     @JoinColumn(name = "review")

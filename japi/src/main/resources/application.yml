@@ -1,7 +1,7 @@
 server:
   port: 3030
   servlet:
-    context-path: "/api/v2"
+    context-path: "/api/v3"
 spring:
   main:
     web-application-type: servlet
@@ -27,4 +27,4 @@ logging:
       hibernate:
         SQL : INFO
   file:
-    name: F:/AwesomeProjects/jamDb/japi/log/jam-api.log
+    name: log/jam-api.log

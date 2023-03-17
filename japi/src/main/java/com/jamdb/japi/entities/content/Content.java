@@ -23,7 +23,7 @@ public class Content extends BaseEntity implements Comparable<Content> {
     private String title;
     @Enumerated(EnumType.STRING)
     private Type type;
-    private int episodes;
+    private Integer episodes;
     @Enumerated(EnumType.STRING)
     private Status status;
     @Embedded
@@ -32,7 +32,7 @@ public class Content extends BaseEntity implements Comparable<Content> {
     private String thumbnail;
     @Column(columnDefinition = "TEXT")
     private String description;
-    private double score;
+    private Double score;
     @org.hibernate.annotations.Type(ListArrayType.class)
     @Column(columnDefinition = "text[]")
     private List<String> synonyms;
@@ -43,6 +43,8 @@ public class Content extends BaseEntity implements Comparable<Content> {
     @Column(columnDefinition = "text[]")
 
     private List<String> tags;
+    @Column(name = "likes")
+    private Integer likes = 0;
 
     public void setType(String type) {
         this.type = Type.valueOf(type);
@@ -57,4 +59,5 @@ public class Content extends BaseEntity implements Comparable<Content> {
     public int compareTo(Content content) {
         return this.getId().compareTo(content.getId());
     }
+
 }

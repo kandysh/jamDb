@@ -24,8 +24,8 @@ public class AnimeDetailsDto {
     private Status status;
     private com.jamdb.japi.entities.content.Status contentStatus;
 
-    private int episodeProgress;
-    private int totalEpisodes;
-    private double score;
+    private Integer episodeProgress;
+    private Integer totalEpisodes;
+    private Double score;
     private String review;
 }
