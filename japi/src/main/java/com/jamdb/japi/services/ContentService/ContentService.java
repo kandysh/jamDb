@@ -6,7 +6,6 @@ import com.jamdb.japi.entities.content.Status;
 import com.jamdb.japi.entities.content.Type;
 import com.jamdb.japi.repository.ContentRepository;
 import com.jamdb.japi.utils.UtilFunctions;
-import com.jamdb.japi.utils.UtilService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +18,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class ContentService implements ContentServiceInterface {
     private final ContentRepository contentRepository;
-    private final UtilService utilService;
     private final UtilFunctions utilFunctions;
 
     @Override
@@ -44,9 +42,6 @@ public class ContentService implements ContentServiceInterface {
 
     @Override
     public Content saveContent(Content content) {
-        if (Objects.isNull(content.getDescription())) {
-            content = utilService.addDescriptionAndScore(content);
-        }
         contentRepository.save(content);
         return content;
     }

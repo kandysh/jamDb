@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.jamdb</groupId>
     <artifactId>JapiSeeder</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1</version>
     <name>JapiSeeder</name>
     <description>JapiSeeder</description>
     <properties>
