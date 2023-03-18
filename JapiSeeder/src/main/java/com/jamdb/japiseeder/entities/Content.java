@@ -17,6 +17,8 @@ import java.util.List;
 
 
 public class Content extends BaseEntity implements Comparable<Content> {
+    @Column(name = "source_id", unique = true)
+    public String sourceId;
     @org.hibernate.annotations.Type(ListArrayType.class)
     @Column(columnDefinition = "text[]")
     private List<String> sources;
@@ -44,11 +46,7 @@ public class Content extends BaseEntity implements Comparable<Content> {
     @Column(columnDefinition = "text[]")
 
     private List<String> tags;
-
     private Integer likes;
-
-    @Column(name = "source_id",unique = true)
-    public String sourceId;
 
     public void setType(String type) {
         this.type = Type.valueOf(type);

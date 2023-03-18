@@ -6,6 +6,7 @@ import com.jamdb.japiseeder.dto.ApiResponse;
 import com.jamdb.japiseeder.entities.Content;
 import com.jamdb.japiseeder.entities.ContentRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import net.sandrohc.jikan.Jikan;
 import net.sandrohc.jikan.exception.JikanQueryException;
 import org.apache.commons.collections4.ListUtils;
@@ -18,6 +19,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -29,7 +31,8 @@ public class JapiSeederApplication {
     private final ContentRepository contentRepository;
 
     public static void main(String[] args) {
-        SpringApplication.run(JapiSeederApplication.class, args);
+
+        SpringApplication.run(JapiSeederApplication.class, args).close();
     }
 
     @Async
@@ -56,33 +59,40 @@ public class JapiSeederApplication {
     }
 
     @Bean
-    CommandLineRunner runner() {
+    CommandLineRunner seeder() {
         return args -> {
             getJson();
+//            System.out.println("seeder");
         };
     }
-    @Async
-    public void saveUpdatedInfo(Content content) {
-        var temp = contentRepository.findContentBySourceId(content.getSources().get(0)).orElse(content);
-        addDescriptionAndScore(temp).thenAcceptAsync(t ->
-                contentRepository.save(Content.builder()
-                        .title(t.getTitle())
-                        .likes(t.getLikes())
-                        .score(t.getScore())
-                        .description(t.getDescription())
-                        .sources(t.getSources())
-                        .picture(t.getTitle())
-                        .animeSeason(t.getAnimeSeason())
-                        .episodes(t.getEpisodes())
-                        .tags(t.getTags())
-                        .relations(t.getRelations())
-                        .synonyms(t.getSynonyms())
-                        .thumbnail(t.getThumbnail())
-                        .type(t.getType()).status(t.getStatus())
-                        .sourceId(t.getSources().get(0)).build()));
-        System.out.println(content.getTitle());
-        contentRepository.save(content);
 
+    @SneakyThrows
+    public Content saveUpdatedInfo(Content content) {
+        var temp = contentRepository.findContentBySourceId(content.getSources().get(0)).orElse(content);
+        if (Objects.isNull(temp.getId())) {
+            return addDescriptionAndScore(temp).thenApplyAsync(t ->
+                    contentRepository.save(Content.builder()
+                            .title(t.getTitle())
+                            .likes(t.getLikes())
+                            .score(t.getScore())
+                            .description(t.getDescription())
+                            .sources(t.getSources())
+                            .picture(t.getTitle())
+                            .animeSeason(t.getAnimeSeason())
+                            .episodes(t.getEpisodes())
+                            .tags(t.getTags())
+                            .relations(t.getRelations())
+                            .synonyms(t.getSynonyms())
+                            .thumbnail(t.getThumbnail())
+                            .type(t.getType()).status(t.getStatus())
+                            .sourceId(t.getSources().get(0)).build())).get();
+        }
+        temp.setStatus(content.getStatus().toString());
+        temp.setEpisodes(content.getEpisodes());
+        temp.setScore(content.getScore());
+        temp.setPicture(content.getPicture());
+
+        return temp;
     }
 
     @Async
@@ -104,10 +114,12 @@ public class JapiSeederApplication {
 
         response.thenAcceptAsync(apiResponse ->
                 ListUtils.partition(apiResponse.getData(), 1000).forEach((contents -> {
-                    service.execute(() -> contents.forEach(this::saveUpdatedInfo));
+                    service.execute(
+                            () -> contentRepository.saveAll(contents.stream().map(this::saveUpdatedInfo).toList()));
                 })));
 
     }
+
 
 }
 

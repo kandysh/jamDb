@@ -7,7 +7,7 @@ spring:
     web-application-type: servlet
 
   datasource:
-    url : "jdbc:postgresql://db.helydawygyybigzrcmte.supabase.co:5432/postgres"
+    url: "jdbc:postgresql://db.helydawygyybigzrcmte.supabase.co:5432/postgres"
     username: "postgres"
     password: "notanotheranilist"
   jpa:
@@ -16,5 +16,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        generate_statistics: true
+        default_batch_fetch_size: 500
+        order_updates: true
     show-sql: false
     open-in-view: false
