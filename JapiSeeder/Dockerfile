@@ -1,7 +1,8 @@
-FROM eclipse-temurin:17-jdk-alpine
-RUN apk update && apk add bash
+FROM eclipse-temurin:latest
+WORKDIR .
+RUN apt-get update
+RUN apt-get -y install cron
 ADD ${JRE_FILE} app.jar
 RUN chmod 0644 app.jar
-RUN apk add cron
-RUN crontab -l | {cat; echo "0 0 * * 0 java -jar app.jar";} | crontab -
+RUN crontab -l | {cat; echo "30 13 * * 6 java -jar app.jar"} | crontab -e
 CMD cron
