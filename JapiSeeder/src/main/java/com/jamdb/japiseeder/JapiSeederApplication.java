@@ -16,9 +16,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @SpringBootApplication
@@ -57,27 +55,31 @@ public class JapiSeederApplication {
     @Bean
     CommandLineRunner runner() {
         return args -> {
-            mapSourceId();
-            deleteDuplicates();
             getJson();
         };
     }
 
-    public void jsonMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        TypeReference<List<Content>> typeReference = new TypeReference<List<Content>>() {
-        };
-        try (InputStream inputStream = TypeReference.class.getResourceAsStream(
-                "/json/anime-offline-database.json")) {
-            List<Content> contents = mapper.readValue(inputStream, typeReference);
-            contentRepository.saveAll(contents);
-            System.out.println("Contents Saved!");
-        } catch (IOException e) {
-            System.out.println("Unable to save content" + e.getMessage());
-        }
-    }
+    public void saveUpdatedInfo(Content content) {
+        var temp = contentRepository.findContentBySourceId(content.getSources().get(0)).orElse(content);
+        addDescriptionAndScore(temp).thenAcceptAsync(t ->
+                contentRepository.save(Content.builder()
+                        .title(t.getTitle())
+                        .likes(t.getLikes())
+                        .score(t.getScore())
+                        .description(t.getDescription())
+                        .sources(t.getSources())
+                        .picture(t.getTitle())
+                        .animeSeason(t.getAnimeSeason())
+                        .episodes(t.getEpisodes())
+                        .tags(t.getTags())
+                        .relations(t.getRelations())
+                        .synonyms(t.getSynonyms())
+                        .thumbnail(t.getThumbnail())
+                        .type(t.getType()).status(t.getStatus())
+                        .sourceId(t.getSources().get(0)).build()));
+        contentRepository.save(content);
 
-    @Async
+    }
 
     public void getJson() throws IOException {
 
@@ -87,41 +89,9 @@ public class JapiSeederApplication {
         var response = mapper.readValue(
                 new URL("https://raw.githubusercontent.com/manami-project/anime-offline-database/master/anime-offline-database.json"),
                 typeReference);
-        response.getData().forEach(content -> {
-            var temp = contentRepository.findContentBySourceId(content.getSourceId()).orElse(content);
-            addDescriptionAndScore(content).thenAcceptAsync(t ->
-                    contentRepository.save(Content.builder()
-                            .title(t.getTitle())
-                            .likes(t.getLikes())
-                            .score(t.getScore())
-                            .description(t.getDescription())
-                            .sources(t.getSources())
-                            .picture(t.getTitle())
-                            .animeSeason(t.getAnimeSeason())
-                            .episodes(t.getEpisodes())
-                            .tags(t.getTags())
-                            .relations(t.getRelations())
-                            .synonyms(t.getSynonyms())
-                            .thumbnail(t.getThumbnail())
-                            .type(t.getType()).status(t.getStatus()).build()));
-            contentRepository.save(content);
-        });
+
     }
-
-    public void deleteDuplicates() {
-        var contents = contentRepository.findAll();
-        contents.forEach(content -> contentRepository.deleteContentsBySourceIdContainingAndIdNotContaining(
-                content.getSourceId(), content.getId()));
-    }
-
-    public void mapSourceId() {
-        var contents = contentRepository.findAll();
-        contents.forEach(content -> {
-            content.setSourceId(content.getSources().get(0));
-            contentRepository.save(content);
-
-        });
-    }
-
 
 }
+
+

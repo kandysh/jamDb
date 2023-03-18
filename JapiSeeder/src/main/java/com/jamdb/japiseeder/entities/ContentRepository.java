@@ -11,7 +11,5 @@ import java.util.UUID;
 public interface ContentRepository extends JpaRepository<Content, UUID> {
     Optional<List<Content>> findContentByTitle(String title);
 
-    void deleteContentsBySourceIdContainingAndIdNotContaining(String sourceId, UUID uuid);
-
-    Optional<Content> findContentBySourceId(String sourceId);
+    Optional<Content> findContentBySourceId(String soruceId);
 }

@@ -47,7 +47,7 @@ public class Content extends BaseEntity implements Comparable<Content> {
 
     private Integer likes;
 
-    @Column(name = "source_id")
+    @Column(name = "source_id",unique = true)
     public String sourceId;
 
     public void setType(String type) {
