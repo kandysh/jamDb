@@ -16,8 +16,5 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        generate_statistics: true
-        default_batch_fetch_size: 500
-        order_updates: true
-    show-sql: false
+    show-sql: true
     open-in-view: false

@@ -31,8 +31,7 @@ public class JapiSeederApplication {
     private final ContentRepository contentRepository;
 
     public static void main(String[] args) {
-
-        SpringApplication.run(JapiSeederApplication.class, args).close();
+        SpringApplication.run(JapiSeederApplication.class, args);
     }
 
     @Async
@@ -58,19 +57,12 @@ public class JapiSeederApplication {
         return CompletableFuture.completedFuture(content);
     }
 
-    @Bean
-    CommandLineRunner seeder() {
-        return args -> {
-            getJson();
-//            System.out.println("seeder");
-        };
-    }
-
     @SneakyThrows
-    public Content saveUpdatedInfo(Content content) {
+    @Async
+    public void saveUpdatedInfo(Content content) {
         var temp = contentRepository.findContentBySourceId(content.getSources().get(0)).orElse(content);
         if (Objects.isNull(temp.getId())) {
-            return addDescriptionAndScore(temp).thenApplyAsync(t ->
+            CompletableFuture.completedFuture(addDescriptionAndScore(temp).thenApplyAsync(t ->
                     contentRepository.save(Content.builder()
                             .title(t.getTitle())
                             .likes(t.getLikes())
@@ -85,18 +77,25 @@ public class JapiSeederApplication {
                             .synonyms(t.getSynonyms())
                             .thumbnail(t.getThumbnail())
                             .type(t.getType()).status(t.getStatus())
-                            .sourceId(t.getSources().get(0)).build())).get();
+                            .sourceId(t.getSources().get(0)).build())));
         }
         temp.setStatus(content.getStatus().toString());
         temp.setEpisodes(content.getEpisodes());
         temp.setScore(content.getScore());
         temp.setPicture(content.getPicture());
+        contentRepository.save(temp);
 
-        return temp;
+    }
+
+    @Bean
+    CommandLineRunner seed() {
+        return args -> {
+            getJson();
+        };
     }
 
     @Async
-    public void getJson() throws IOException {
+    public void getJson() {
 
         ObjectMapper mapper = new ObjectMapper();
         TypeReference<ApiResponse> typeReference = new TypeReference<ApiResponse>() {
@@ -104,7 +103,7 @@ public class JapiSeederApplication {
         CompletableFuture<ApiResponse> response = CompletableFuture.supplyAsync(() -> {
             try {
                 return mapper.readValue(
-                        new URL("https://raw.githubusercontent.com/manami-project/anime-offline-database/master/anime-offline-database.json"),
+                        new URL("https://raw.githubusercontent.com/manami-project/animee-offline-database/master/anime-offline-database.json"),
                         typeReference);
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -113,10 +112,11 @@ public class JapiSeederApplication {
         ExecutorService service = Executors.newCachedThreadPool();
 
         response.thenAcceptAsync(apiResponse ->
-                ListUtils.partition(apiResponse.getData(), 1000).forEach((contents -> {
+                ListUtils.partition(apiResponse.getData(), 10).forEach((contents -> {
                     service.execute(
-                            () -> contentRepository.saveAll(contents.stream().map(this::saveUpdatedInfo).toList()));
+                            () -> contents.forEach(this::saveUpdatedInfo));
                 })));
+
 
     }
 
