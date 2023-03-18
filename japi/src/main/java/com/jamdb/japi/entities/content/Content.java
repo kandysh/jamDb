@@ -45,6 +45,8 @@ public class Content extends BaseEntity implements Comparable<Content> {
     private List<String> tags;
     @Column(name = "likes")
     private Integer likes = 0;
+    @Column(name = "source_id")
+    public String sourceId;
 
     public void setType(String type) {
         this.type = Type.valueOf(type);
