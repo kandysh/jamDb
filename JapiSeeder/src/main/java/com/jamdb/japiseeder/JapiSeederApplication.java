@@ -8,6 +8,7 @@ import com.jamdb.japiseeder.entities.ContentRepository;
 import lombok.RequiredArgsConstructor;
 import net.sandrohc.jikan.Jikan;
 import net.sandrohc.jikan.exception.JikanQueryException;
+import org.apache.commons.collections4.ListUtils;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,6 +19,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import java.io.IOException;
 import java.net.URL;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @SpringBootApplication
 @RequiredArgsConstructor
@@ -58,7 +61,7 @@ public class JapiSeederApplication {
             getJson();
         };
     }
-
+    @Async
     public void saveUpdatedInfo(Content content) {
         var temp = contentRepository.findContentBySourceId(content.getSources().get(0)).orElse(content);
         addDescriptionAndScore(temp).thenAcceptAsync(t ->
@@ -77,18 +80,32 @@ public class JapiSeederApplication {
                         .thumbnail(t.getThumbnail())
                         .type(t.getType()).status(t.getStatus())
                         .sourceId(t.getSources().get(0)).build()));
+        System.out.println(content.getTitle());
         contentRepository.save(content);
 
     }
 
+    @Async
     public void getJson() throws IOException {
 
         ObjectMapper mapper = new ObjectMapper();
         TypeReference<ApiResponse> typeReference = new TypeReference<ApiResponse>() {
         };
-        var response = mapper.readValue(
-                new URL("https://raw.githubusercontent.com/manami-project/anime-offline-database/master/anime-offline-database.json"),
-                typeReference);
+        CompletableFuture<ApiResponse> response = CompletableFuture.supplyAsync(() -> {
+            try {
+                return mapper.readValue(
+                        new URL("https://raw.githubusercontent.com/manami-project/anime-offline-database/master/anime-offline-database.json"),
+                        typeReference);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        ExecutorService service = Executors.newCachedThreadPool();
+
+        response.thenAcceptAsync(apiResponse ->
+                ListUtils.partition(apiResponse.getData(), 1000).forEach((contents -> {
+                    service.execute(() -> contents.forEach(this::saveUpdatedInfo));
+                })));
 
     }
 
