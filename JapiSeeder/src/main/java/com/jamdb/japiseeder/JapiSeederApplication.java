@@ -19,7 +19,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -60,9 +59,9 @@ public class JapiSeederApplication {
     @SneakyThrows
     @Async
     public void saveUpdatedInfo(Content content) {
-        var temp = contentRepository.findContentBySourceId(content.getSources().get(0)).orElse(content);
-        if (Objects.isNull(temp.getId())) {
-            CompletableFuture.completedFuture(addDescriptionAndScore(temp).thenApplyAsync(t ->
+        var temp = contentRepository.findContentBySourceId(content.getSources().get(0));
+        if (temp.isEmpty()) {
+            addDescriptionAndScore(content).thenApplyAsync(t ->
                     contentRepository.save(Content.builder()
                             .title(t.getTitle())
                             .likes(t.getLikes())
@@ -77,25 +76,28 @@ public class JapiSeederApplication {
                             .synonyms(t.getSynonyms())
                             .thumbnail(t.getThumbnail())
                             .type(t.getType()).status(t.getStatus())
-                            .sourceId(t.getSources().get(0)).build())));
+                            .sourceId(t.getSources().get(0)).build()));
         }
-        temp.setStatus(content.getStatus().toString());
-        temp.setEpisodes(content.getEpisodes());
-        temp.setScore(content.getScore());
-        temp.setPicture(content.getPicture());
-        contentRepository.save(temp);
+        else {
+
+            temp.get().setStatus(content.getStatus().toString());
+            temp.get().setEpisodes(content.getEpisodes());
+            temp.get().setPicture(content.getPicture());
+            contentRepository.save(temp.get());
+        }
 
     }
 
     @Bean
-    CommandLineRunner seed() {
+    CommandLineRunner runner() {
         return args -> {
             getJson();
         };
     }
 
-    @Async
     public void getJson() {
+        System.out.println("h");
+        System.out.println("here");
 
         ObjectMapper mapper = new ObjectMapper();
         TypeReference<ApiResponse> typeReference = new TypeReference<ApiResponse>() {
@@ -103,7 +105,7 @@ public class JapiSeederApplication {
         CompletableFuture<ApiResponse> response = CompletableFuture.supplyAsync(() -> {
             try {
                 return mapper.readValue(
-                        new URL("https://raw.githubusercontent.com/manami-project/animee-offline-database/master/anime-offline-database.json"),
+                        new URL("https://raw.githubusercontent.com/manami-project/anime-offline-database/master/anime-offline-database.json"),
                         typeReference);
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -112,9 +114,12 @@ public class JapiSeederApplication {
         ExecutorService service = Executors.newCachedThreadPool();
 
         response.thenAcceptAsync(apiResponse ->
-                ListUtils.partition(apiResponse.getData(), 10).forEach((contents -> {
+                ListUtils.partition(apiResponse.getData(), 1000).forEach((contents -> {
                     service.execute(
-                            () -> contents.forEach(this::saveUpdatedInfo));
+                            () -> {
+                                contents.forEach(this::saveUpdatedInfo);
+                            });
+
                 })));
 
 
