@@ -32,6 +32,9 @@ public class UtilFunctions {
             .contentStatus(content.getStatus())
             .score(content.getScore())
             .likes(content.getLikes())
+            .year(content.getAnimeSeason().getYear())
+            .season(content.getAnimeSeason().getSeason().toString())
+            .alternativeName(content.getSynonyms().size() == 0 ? null: content.getSynonyms().get(0) )
             .build();
     public Function<List<Content>, List<ContentDetailsDto>> contentToContentDetails = contents -> contents.stream()
             .map(contentToDetails)

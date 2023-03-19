@@ -12,11 +12,13 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface ContentRepository extends JpaRepository<Content, UUID> {
-    @Query(value = "select * from anime  where to_tsvector(array_to_string(synonyms,' ') || ' ' || title ) @@ plainto_tsquery(?1)", nativeQuery = true)
+    @Query(value = "select * from anime  where to_tsvector(array_to_string(synonyms,' ') || ' ' || title || ' ' || array_to_string(tags, ' ') ) @@ plainto_tsquery(?1)", nativeQuery = true)
     List<Content> findContentBySynonymsAndTitle(String query);
 
-    @Query(nativeQuery = true, value = "select * from anime  where to_tsvector(array_to_string(sources,' ')) @@ plainto_tsquery(?1)")
-    Optional<Content> findContentBySource(String source);
+    @Query(value = "select * from (select * from anime  where to_tsvector(array_to_string(tags, ' ')) @@ plainto_tsquery(?1) offset 0) as b where b.score is not null order by b.score desc limit 50 ",nativeQuery = true)
+    List<Content>findContentByTag(String query);
+
+    Optional<Content> findContentBySourceId(String source);
 
     @Query(value = "select * from anime  order by random() limit 25", nativeQuery = true)
     List<Content> findContentRandomly();

@@ -17,8 +17,6 @@ spring:
         format_sql: true
     show-sql: false
     open-in-view: false
-  mvc:
-    log-request-details: true
 logging:
   level:
     org:

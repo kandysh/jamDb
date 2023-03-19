@@ -1,5 +1,6 @@
 package com.jamdb.japi.services.ContentService;
 
+import com.jamdb.japi.JapiApplication;
 import com.jamdb.japi.dto.ContentDetailsDto;
 import com.jamdb.japi.entities.content.Content;
 import com.jamdb.japi.entities.content.Status;
@@ -7,6 +8,11 @@ import com.jamdb.japi.entities.content.Type;
 import com.jamdb.japi.repository.ContentRepository;
 import com.jamdb.japi.utils.UtilFunctions;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,8 +23,11 @@ import java.util.stream.Collectors;
 @Transactional
 @AllArgsConstructor
 public class ContentService implements ContentServiceInterface {
+
+    private final CacheManager cacheManager;
     private final ContentRepository contentRepository;
     private final UtilFunctions utilFunctions;
+
 
     @Override
     public void saveAllContent(List<Content> contents) {
@@ -47,27 +56,37 @@ public class ContentService implements ContentServiceInterface {
     }
 
     @Override
+    @Cacheable(value = "content")
     public ContentDetailsDto getContent(String contentId) {
         var content = contentRepository.findById(UUID.fromString(contentId)).orElseThrow();
         return utilFunctions.contentToDetails.apply(content);
     }
 
     @Override
-    public List<ContentDetailsDto> getContentForSearchQuery(String query) {
-        return utilFunctions.contentToContentDetails.apply(contentRepository.findContentBySynonymsAndTitle(query));
+    @Cacheable(value="names")
+    public List<ContentDetailsDto> getContentForSearchWithName(String name) {
+            return utilFunctions.contentToContentDetails.apply(contentRepository.findContentBySynonymsAndTitle(name));
+    }
+    @Override
+    @Cacheable(value = "tags")
+    public List<ContentDetailsDto> getContentForSearchWithTag(String tag){
+        return utilFunctions.contentToContentDetails.apply(contentRepository.findContentByTag(tag));
     }
 
+
+    @Cacheable(value = "related")
     @Override
     public List<ContentDetailsDto> getRelated(String contentId) {
         var contents = contentRepository.findById(UUID.fromString(contentId)).orElseThrow();
         if (contents.getRelations().isEmpty())
             return new ArrayList<>();
         return contents.getRelations().stream().limit(5).map(relation -> {
-            var content = contentRepository.findContentBySource(relation).orElseThrow();
-            return utilFunctions.contentToDetails.apply(content);
-        }).collect(Collectors.toList());
+            var content = contentRepository.findContentBySourceId(relation);
+            return content.map(value -> utilFunctions.contentToDetails.apply(value)).orElse(null);
+        }).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
+    @Cacheable("currentBystatus")
     @Override
     public List<ContentDetailsDto> getCurrentByStatus(String status) {
         return utilFunctions.contentToContentDetails.apply(contentRepository
@@ -75,6 +94,7 @@ public class ContentService implements ContentServiceInterface {
                         Status.valueOf(status.toUpperCase())));
     }
 
+    @Cacheable("currentByType")
     @Override
     public List<ContentDetailsDto> getCurrentByType(String type) {
         return utilFunctions.contentToContentDetails.apply(
@@ -82,6 +102,7 @@ public class ContentService implements ContentServiceInterface {
                         Type.valueOf(type.toUpperCase())));
     }
 
+    @Cacheable("currentByStatusAndType")
     @Override
     public List<ContentDetailsDto> getCurrentByStatusAndType(String status, String type) {
         return utilFunctions.contentToContentDetails.apply(
@@ -89,6 +110,7 @@ public class ContentService implements ContentServiceInterface {
                         Status.valueOf(status.toUpperCase()), Type.valueOf(type.toUpperCase())));
     }
 
+    @Cacheable("top-current")
     @Override
     public List<ContentDetailsDto> getCurrentTopRated() {
         return utilFunctions.contentToContentDetails.apply(
@@ -98,6 +120,7 @@ public class ContentService implements ContentServiceInterface {
                         .toList());
     }
 
+    @Cacheable("top")
     @Override
     public List<ContentDetailsDto> getTopContent(String type) {
         if (type.equals("all"))
@@ -109,6 +132,7 @@ public class ContentService implements ContentServiceInterface {
                         .toList());
     }
 
+    @Cacheable("trending")
     @Override
     public List<ContentDetailsDto> getTrending() {
         var contents = contentRepository.findContentByAnimeSeasonAndLikesNotNullOrderByLikesDesc(
@@ -116,7 +140,7 @@ public class ContentService implements ContentServiceInterface {
         if (contents.isEmpty()) {
             return getCurrentTopRated();
         }
-        if(contents.size()<25){
+        if (contents.size() < 25) {
             contents.addAll(contentRepository.findContentByLikesNotNullOrderByLikesDesc());
         }
         if (contents.size() < 25) {
@@ -139,5 +163,8 @@ public class ContentService implements ContentServiceInterface {
         content.setLikes(Objects.isNull(content.getLikes()) ? 0 : content.getLikes() - 1);
         contentRepository.save(content);
     }
-
+    @Scheduled(cron = "0 12 * * * ?")
+    public void clearCacheSchedule() {
+        cacheManager.getCacheNames().forEach(cache -> Objects.requireNonNull(cacheManager.getCache(cache)).clear());
+    }
 }

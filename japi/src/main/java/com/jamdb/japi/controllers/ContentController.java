@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/content")
@@ -39,9 +40,10 @@ public class ContentController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<ContentDetailsDto>> getContentOnQuery(@RequestParam("q") String query) {
-
-        return ResponseEntity.ok(contentService.getContentForSearchQuery(query));
+    public ResponseEntity<List<ContentDetailsDto>> getContentOnQuery(@RequestParam(required = false) String name, @RequestParam(required = false) String tag) {
+        if (Objects.nonNull(tag))
+            return ResponseEntity.ok(contentService.getContentForSearchWithTag(tag));
+        return ResponseEntity.ok(contentService.getContentForSearchWithName(name));
     }
 
     @GetMapping("/related/{contentId}")

@@ -2,6 +2,7 @@ package com.jamdb.japi.services.ContentService;
 
 import com.jamdb.japi.dto.ContentDetailsDto;
 import com.jamdb.japi.entities.content.Content;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,10 +21,13 @@ public interface ContentServiceInterface {
 
     ContentDetailsDto getContent(String contentId);
 
-    List<ContentDetailsDto> getContentForSearchQuery(String query);
+
+    List<ContentDetailsDto> getContentForSearchWithName(String name);
+
+    @Cacheable(value = "tags",condition = "#tag='adventure'")
+    List<ContentDetailsDto> getContentForSearchWithTag(String tag);
 
     List<ContentDetailsDto> getRelated(String contentId);
-
 
 
     List<ContentDetailsDto> getCurrentByStatus(String status);
