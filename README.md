@@ -3,7 +3,7 @@
 
 Jam Db 
 
-Archived branch of the project
+main branch of the project
 
 
 
