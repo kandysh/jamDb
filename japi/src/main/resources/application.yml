@@ -28,3 +28,8 @@ logging:
         SQL: INFO
   file:
     name: log/jam-api.log
+springdoc:
+  api-docs:
+    path: /openapi.json
+  swagger-ui:
+    enabled: false

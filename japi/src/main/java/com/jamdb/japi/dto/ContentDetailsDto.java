@@ -4,6 +4,8 @@ import com.jamdb.japi.entities.content.Status;
 import com.jamdb.japi.entities.content.Type;
 import lombok.*;
 
+import java.util.List;
+
 @Data
 @Builder
 @ToString
@@ -23,4 +25,6 @@ public class ContentDetailsDto {
     private String season;
     private Integer year;
     private String alternativeName;
+    private List<String> tags;
+    private String sourceId;
 }

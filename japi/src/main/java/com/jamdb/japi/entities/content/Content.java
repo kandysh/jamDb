@@ -18,7 +18,7 @@ import java.util.List;
 
 public class Content extends BaseEntity implements Comparable<Content> {
     @Column(name = "source_id")
-    public String sourceId;
+    private String sourceId;
     @org.hibernate.annotations.Type(ListArrayType.class)
     @Column(columnDefinition = "text[]")
     private List<String> sources;
