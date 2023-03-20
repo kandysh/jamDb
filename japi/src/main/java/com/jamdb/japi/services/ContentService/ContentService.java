@@ -24,16 +24,6 @@ public class ContentService implements ContentServiceInterface {
 
 
     @Override
-    public void saveAllContent(List<Content> contents) {
-        contentRepository.saveAll(contents);
-    }
-
-    @Override
-    public List<Content> listAllContent() {
-        return contentRepository.findAll();
-    }
-
-    @Override
     public List<ContentDetailsDto> listContent() {
         return utilFunctions.contentToContentDetails.apply(contentRepository.findContentRandomly());
     }
@@ -44,28 +34,10 @@ public class ContentService implements ContentServiceInterface {
     }
 
     @Override
-    public Content saveContent(Content content) {
-        contentRepository.save(content);
-        return content;
-    }
-
-    @Override
     @Cacheable(value = "content")
     public ContentDetailsDto getContent(String contentId) {
         var content = contentRepository.findById(UUID.fromString(contentId)).orElseThrow();
         return utilFunctions.contentToDetails.apply(content);
-    }
-
-    @Override
-    @Cacheable(value = "names")
-    public List<ContentDetailsDto> getContentForSearchWithName(String name) {
-        return utilFunctions.contentToContentDetails.apply(contentRepository.findContentBySynonymsAndTitle(name));
-    }
-
-    @Override
-    @Cacheable(value = "tags")
-    public List<ContentDetailsDto> getContentForSearchWithTag(String tag) {
-        return utilFunctions.contentToContentDetails.apply(contentRepository.findContentByTag(tag));
     }
 
 
@@ -109,7 +81,8 @@ public class ContentService implements ContentServiceInterface {
     @Override
     public List<ContentDetailsDto> getCurrentTopRated() {
         return utilFunctions.contentToContentDetails.apply(
-                contentRepository.findContentByAnimeSeasonOrderByScoreDesc(utilFunctions.getCurrentAnimeSeason())
+                contentRepository.findContentByAnimeSeasonOrderByScoreDesc(
+                                utilFunctions.getCurrentAnimeSeason())
                         .stream()
                         .limit(25)
                         .toList());
@@ -127,21 +100,15 @@ public class ContentService implements ContentServiceInterface {
                         .toList());
     }
 
-    @Cacheable("trending")
     @Override
     public List<ContentDetailsDto> getTrending() {
         var contents = contentRepository.findContentByAnimeSeasonAndLikesNotNullOrderByLikesDesc(
                 utilFunctions.getCurrentAnimeSeason());
         if (contents.isEmpty()) {
-            return getCurrentTopRated();
+            contents.addAll(contentRepository.findAllContentAndOrderByLikes());
         }
-        if (contents.size() < 25) {
-            contents.addAll(contentRepository.findContentByLikesNotNullOrderByLikesDesc());
-        }
-        if (contents.size() < 25) {
-            contents.addAll(contentRepository.findContentByAnimeSeasonAndLikesNullOrderByScoreDesc(
-                    utilFunctions.getCurrentAnimeSeason()));
-        }
+        if (contents.size() < 25)
+            contents.addAll(contentRepository.findTopContent());
         return utilFunctions.contentToContentDetails.apply(contents.stream().limit(25).toList());
     }
 
@@ -158,5 +125,19 @@ public class ContentService implements ContentServiceInterface {
         content.setLikes(Objects.isNull(content.getLikes()) ? 0 : content.getLikes() - 1);
         contentRepository.save(content);
     }
+
+    @Cacheable("search-params")
+    @Override
+    public List<ContentDetailsDto> getContentBySearchParams(String search, String tag, String year, String season, String status, String type) {
+        if (Objects.nonNull(tag) && (Objects.isNull(search) || Objects.isNull(year) || Objects.isNull(
+                season) || Objects.isNull(status) || Objects.isNull(type)))
+            return utilFunctions.contentToContentDetails.apply(contentRepository.findContentByTag(tag));
+
+        if (Objects.nonNull(search) && Objects.isNull(tag))
+            return utilFunctions.contentToContentDetails.apply(contentRepository.findContentBySynonymsAndTitle(search));
+        return utilFunctions.contentToContentDetails.apply(
+                contentRepository.findContentBasedOnQuery(search, tag, year, season, status, type));
+    }
+
 
 }

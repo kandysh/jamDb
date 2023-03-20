@@ -66,7 +66,7 @@ public class UtilService {
                             .score(t.getScore())
                             .description(t.getDescription())
                             .sources(t.getSources())
-                            .picture(t.getTitle())
+                            .picture(t.getPicture())
                             .animeSeason(t.getAnimeSeason())
                             .episodes(t.getEpisodes())
                             .tags(t.getTags())
@@ -89,7 +89,7 @@ public class UtilService {
     public void getJson() {
 
         ObjectMapper mapper = new ObjectMapper();
-        TypeReference<ApiSeederResponse> typeReference = new TypeReference<ApiSeederResponse>() {
+        TypeReference<ApiSeederResponse> typeReference = new TypeReference<>() {
         };
         CompletableFuture<ApiSeederResponse> response = CompletableFuture.supplyAsync(() -> {
             try {
@@ -103,16 +103,11 @@ public class UtilService {
         ExecutorService service = Executors.newCachedThreadPool();
 
         response.thenAcceptAsync(apiResponse ->
-                ListUtils.partition(apiResponse.getData(), 1000).forEach((contents -> {
-                    service.execute(
-                            () -> {
-                                contents.forEach(this::saveUpdatedInfo);
-                            });
-
-                })));
+                ListUtils.partition(apiResponse.getData(), 1000).forEach((contents -> service.execute(
+                        () -> contents.forEach(this::saveUpdatedInfo)))));
     }
 
-    @Scheduled(cron = "0 0 * * 6 ?")
+    @Scheduled(cron = "0 3 * * 6 ?")
     public void clearCacheSchedule() {
         cacheManager.getCacheNames().forEach(cache -> Objects.requireNonNull(cacheManager.getCache(cache)).clear());
     }
