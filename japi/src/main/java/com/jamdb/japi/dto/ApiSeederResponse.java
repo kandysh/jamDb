@@ -1,6 +1,6 @@
-package com.jamdb.japiseeder.dto;
+package com.jamdb.japi.dto;
 
-import com.jamdb.japiseeder.entities.Content;
+import com.jamdb.japi.entities.content.Content;
 import lombok.*;
 
 import java.util.List;
@@ -11,11 +11,10 @@ import java.util.List;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class ApiResponse {
+public class ApiSeederResponse {
     private License license;
 
     private String repository;
     private String lastUpdate;
     private List<Content> data;
-
 }

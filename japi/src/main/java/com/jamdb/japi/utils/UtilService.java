@@ -1,37 +1,35 @@
-package com.jamdb.japiseeder;
+package com.jamdb.japi.utils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jamdb.japiseeder.dto.ApiResponse;
-import com.jamdb.japiseeder.entities.Content;
-import com.jamdb.japiseeder.entities.ContentRepository;
+import com.jamdb.japi.dto.ApiSeederResponse;
+import com.jamdb.japi.entities.content.Content;
+import com.jamdb.japi.repository.ContentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import net.sandrohc.jikan.Jikan;
 import net.sandrohc.jikan.exception.JikanQueryException;
 import org.apache.commons.collections4.ListUtils;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
+import org.springframework.cache.CacheManager;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@SpringBootApplication
+@Service
+@Transactional
 @RequiredArgsConstructor
-@EnableAsync
-public class JapiSeederApplication {
+public class UtilService {
     private final ContentRepository contentRepository;
 
-    public static void main(String[] args) {
-        SpringApplication.run(JapiSeederApplication.class, args);
-    }
+    private final CacheManager cacheManager;
 
     @Async
     public CompletableFuture<Content> addDescriptionAndScore(Content content) {
@@ -77,8 +75,7 @@ public class JapiSeederApplication {
                             .thumbnail(t.getThumbnail())
                             .type(t.getType()).status(t.getStatus())
                             .sourceId(t.getSources().get(0)).build()));
-        }
-        else {
+        } else {
 
             temp.get().setStatus(content.getStatus().toString());
             temp.get().setEpisodes(content.getEpisodes());
@@ -88,21 +85,13 @@ public class JapiSeederApplication {
 
     }
 
-    @Bean
-    CommandLineRunner runner() {
-        return args -> {
-            getJson();
-        };
-    }
-
+    @Scheduled(cron = "0 1 * * 6 ?")
     public void getJson() {
-        System.out.println("h");
-        System.out.println("here");
 
         ObjectMapper mapper = new ObjectMapper();
-        TypeReference<ApiResponse> typeReference = new TypeReference<ApiResponse>() {
+        TypeReference<ApiSeederResponse> typeReference = new TypeReference<ApiSeederResponse>() {
         };
-        CompletableFuture<ApiResponse> response = CompletableFuture.supplyAsync(() -> {
+        CompletableFuture<ApiSeederResponse> response = CompletableFuture.supplyAsync(() -> {
             try {
                 return mapper.readValue(
                         new URL("https://raw.githubusercontent.com/manami-project/anime-offline-database/master/anime-offline-database.json"),
@@ -121,11 +110,10 @@ public class JapiSeederApplication {
                             });
 
                 })));
-
-
     }
 
-
+    @Scheduled(cron = "0 0 * * 6 ?")
+    public void clearCacheSchedule() {
+        cacheManager.getCacheNames().forEach(cache -> Objects.requireNonNull(cacheManager.getCache(cache)).clear());
+    }
 }
-
-

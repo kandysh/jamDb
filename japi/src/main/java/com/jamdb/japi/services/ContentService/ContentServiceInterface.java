@@ -24,7 +24,7 @@ public interface ContentServiceInterface {
 
     List<ContentDetailsDto> getContentForSearchWithName(String name);
 
-    @Cacheable(value = "tags",condition = "#tag='adventure'")
+    @Cacheable(value = "tags", condition = "#tag='adventure'")
     List<ContentDetailsDto> getContentForSearchWithTag(String tag);
 
     List<ContentDetailsDto> getRelated(String contentId);

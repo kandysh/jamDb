@@ -4,8 +4,6 @@ import com.jamdb.japi.entities.content.Status;
 import com.jamdb.japi.entities.content.Type;
 import lombok.*;
 
-import java.util.List;
-
 @Data
 @Builder
 @ToString

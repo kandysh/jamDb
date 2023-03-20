@@ -15,11 +15,6 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Service
 public class UtilFunctions {
-    public Season getCurrentAnimeSeason() {
-        var currDate = LocalDate.now();
-        return new Season(Seasons.values()[currDate.getMonthValue() % 3], currDate.getYear());
-    }
-
     public Function<Content, ContentDetailsDto> contentToDetails = content -> ContentDetailsDto
             .builder()
             .contentId(content.getId().toString())
@@ -34,11 +29,16 @@ public class UtilFunctions {
             .likes(content.getLikes())
             .year(content.getAnimeSeason().getYear())
             .season(content.getAnimeSeason().getSeason().toString())
-            .alternativeName(content.getSynonyms().size() == 0 ? null: content.getSynonyms().get(0) )
+            .alternativeName(content.getSynonyms().size() == 0 ? null : content.getSynonyms().get(0))
             .build();
     public Function<List<Content>, List<ContentDetailsDto>> contentToContentDetails = contents -> contents.stream()
             .map(contentToDetails)
             .collect(
                     Collectors.toList());
+
+    public Season getCurrentAnimeSeason() {
+        var currDate = LocalDate.now();
+        return new Season(Seasons.values()[currDate.getMonthValue() % 3], currDate.getYear());
+    }
 
 }

@@ -9,7 +9,6 @@ import com.jamdb.japi.repository.UserRepository;
 import com.jamdb.japi.security.config.JwtService;
 import com.jamdb.japi.services.TokenService.TokenServiceInterface;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -48,7 +47,8 @@ public class AuthService implements AuthServiceInterface {
 
     @Override
     public UserResponse authenticateUser(UserAuthDto userAuthDto) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userAuthDto.getUserName(), userAuthDto.getPassword()));
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(userAuthDto.getUserName(), userAuthDto.getPassword()));
         var user = userRepository.findByUserName(userAuthDto.getUserName()).orElseThrow();
         var jwtToken = jwtService.generateToken(user);
         tokenService.revokeAllUserTokens(user);

@@ -8,10 +8,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin
 @RestController
-@RequestMapping({"/","/*/**"})
+@RequestMapping({"/", "/*/**"})
 public class WelocmeController {
     @RequestMapping
-    ResponseEntity<WelcomeApiDto> landingPage(){
-        return ResponseEntity.ok(WelcomeApiDto.builder().message("Welcome to JamApi. Currenly we are at v3.Do look at our api documentation. Happy Jamming").url("https://kandysh.gitbook.io/jamdbapi/").content("/content").user("/user").auth("/auth").build());
+    ResponseEntity<WelcomeApiDto> landingPage() {
+        return ResponseEntity.ok(WelcomeApiDto.builder()
+                .message("Welcome to JamApi. Currenly we are at v3.Do look at our api documentation. Happy Jamming")
+                .url("https://kandysh.gitbook.io/jamdbapi/")
+                .content("/content")
+                .user("/user")
+                .auth("/auth")
+                .build());
     }
 }

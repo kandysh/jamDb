@@ -1,4 +1,4 @@
-package com.jamdb.japiseeder.dto;
+package com.jamdb.japi.dto;
 
 import lombok.*;
 

@@ -1,6 +1,5 @@
 package com.jamdb.japi.services.ContentService;
 
-import com.jamdb.japi.JapiApplication;
 import com.jamdb.japi.dto.ContentDetailsDto;
 import com.jamdb.japi.entities.content.Content;
 import com.jamdb.japi.entities.content.Status;
@@ -8,11 +7,7 @@ import com.jamdb.japi.entities.content.Type;
 import com.jamdb.japi.repository.ContentRepository;
 import com.jamdb.japi.utils.UtilFunctions;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +19,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class ContentService implements ContentServiceInterface {
 
-    private final CacheManager cacheManager;
     private final ContentRepository contentRepository;
     private final UtilFunctions utilFunctions;
 
@@ -63,13 +57,14 @@ public class ContentService implements ContentServiceInterface {
     }
 
     @Override
-    @Cacheable(value="names")
+    @Cacheable(value = "names")
     public List<ContentDetailsDto> getContentForSearchWithName(String name) {
-            return utilFunctions.contentToContentDetails.apply(contentRepository.findContentBySynonymsAndTitle(name));
+        return utilFunctions.contentToContentDetails.apply(contentRepository.findContentBySynonymsAndTitle(name));
     }
+
     @Override
     @Cacheable(value = "tags")
-    public List<ContentDetailsDto> getContentForSearchWithTag(String tag){
+    public List<ContentDetailsDto> getContentForSearchWithTag(String tag) {
         return utilFunctions.contentToContentDetails.apply(contentRepository.findContentByTag(tag));
     }
 
@@ -163,8 +158,5 @@ public class ContentService implements ContentServiceInterface {
         content.setLikes(Objects.isNull(content.getLikes()) ? 0 : content.getLikes() - 1);
         contentRepository.save(content);
     }
-    @Scheduled(cron = "0 12 * * * ?")
-    public void clearCacheSchedule() {
-        cacheManager.getCacheNames().forEach(cache -> Objects.requireNonNull(cacheManager.getCache(cache)).clear());
-    }
+
 }

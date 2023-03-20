@@ -15,7 +15,6 @@ import com.jamdb.japi.repository.UserRepository;
 import com.jamdb.japi.repository.WatchListRepository;
 import com.jamdb.japi.services.ContentService.ContentServiceInterface;
 import lombok.AllArgsConstructor;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +33,8 @@ public class UserService implements UserServiceInterface {
 
     @Override
     public UserResponse getUser(String userName) throws UserAuthException {
-        var user = userRepository.findByUserName(userName).orElseThrow(() -> new UserAuthException(String.format("username %s not Found", userName)));
+        var user = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new UserAuthException(String.format("username %s not Found", userName)));
         return UserResponse.builder().userName(user.getUsername()).email(user.getEmail()).token("").build();
     }
 

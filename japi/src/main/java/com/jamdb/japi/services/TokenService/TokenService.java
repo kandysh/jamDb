@@ -5,7 +5,6 @@ import com.jamdb.japi.entities.token.TokenType;
 import com.jamdb.japi.entities.user.User;
 import com.jamdb.japi.repository.TokenRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -6,7 +6,7 @@ spring:
   main:
     web-application-type: servlet
   datasource:
-    url : "jdbc:postgresql://db.helydawygyybigzrcmte.supabase.co:5432/postgres"
+    url: "jdbc:postgresql://db.helydawygyybigzrcmte.supabase.co:5432/postgres"
     username: "postgres"
     password: "notanotheranilist"
   jpa:
@@ -21,8 +21,8 @@ logging:
   level:
     org:
       springframework:
-        web : DEBUG
+        web: DEBUG
       hibernate:
-        SQL : INFO
+        SQL: INFO
   file:
     name: log/jam-api.log
