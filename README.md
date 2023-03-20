@@ -8,5 +8,5 @@ main branch of the project
 
 
 v3-Api Endpoints
-https://kandysh.gitbook.io/jamdbapi/
+https://jdocs.kandysh.xyz/
 
