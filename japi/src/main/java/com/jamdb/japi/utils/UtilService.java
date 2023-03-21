@@ -30,6 +30,7 @@ public class UtilService {
     private final ContentRepository contentRepository;
 
     private final CacheManager cacheManager;
+    private final ObjectMapper mapper = new ObjectMapper();
 
     @Async
     public CompletableFuture<Content> addDescriptionAndScore(Content content) {
@@ -38,7 +39,7 @@ public class UtilService {
             var temp = jikan.query()
                     .anime()
                     .search()
-                    .query(content.getTitle())
+                    .query(content.getTitle() + content.getType())
                     .limit(1)
                     .execute()
                     .collectList()
@@ -76,7 +77,6 @@ public class UtilService {
                             .type(t.getType()).status(t.getStatus())
                             .sourceId(t.getSources().get(0)).build()));
         } else {
-
             temp.get().setStatus(content.getStatus().toString());
             temp.get().setEpisodes(content.getEpisodes());
             temp.get().setPicture(content.getPicture());
@@ -88,7 +88,6 @@ public class UtilService {
     @Scheduled(cron = "0 1 * * 6 ?")
     public void getJson() {
 
-        ObjectMapper mapper = new ObjectMapper();
         TypeReference<ApiSeederResponse> typeReference = new TypeReference<>() {
         };
         CompletableFuture<ApiSeederResponse> response = CompletableFuture.supplyAsync(() -> {

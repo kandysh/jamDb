@@ -18,8 +18,6 @@ public interface ContentServiceInterface {
     ContentDetailsDto getContent(String contentId);
 
 
-
-
     List<ContentDetailsDto> getRelated(String contentId);
 
 

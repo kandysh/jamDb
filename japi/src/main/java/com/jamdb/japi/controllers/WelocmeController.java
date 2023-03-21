@@ -3,6 +3,7 @@ package com.jamdb.japi.controllers;
 import com.jamdb.japi.dto.WelcomeApiDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping({"/", "/*/**"})
 public class WelocmeController {
-    @RequestMapping
+    @GetMapping
     ResponseEntity<WelcomeApiDto> landingPage() {
         return ResponseEntity.ok(WelcomeApiDto.builder()
                 .message("Welcome to JamApi. Currenly we are at v3.Do look at our api documentation. Happy Jamming")

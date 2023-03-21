@@ -1,5 +1,6 @@
 package com.jamdb.japi.dto;
 
+import com.jamdb.japi.entities.content.Season;
 import com.jamdb.japi.entities.content.Status;
 import com.jamdb.japi.entities.content.Type;
 import lombok.*;
@@ -22,8 +23,7 @@ public class ContentDetailsDto {
     private Status contentStatus;
     private Double score;
     private Integer likes;
-    private String season;
-    private Integer year;
+    private Season season;
     private String alternativeName;
     private List<String> tags;
     private String sourceId;
